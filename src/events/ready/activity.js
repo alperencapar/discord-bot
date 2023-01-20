@@ -1,30 +1,37 @@
-const { ActivityType } = require("discord.js")
-module.exports = (client) => {
+const { ActivityType, PresenceUpdateStatus } = require("discord.js");
+const getRandomNumber = require("../../utils/getRandomNumber");
+module.exports = async (client) => {
     
-    const status = [
+    const presenceOptions = [
         {
-            name: "VSCODE",
-            type: ActivityType.Playing
+            name: "Visual Studio Code",
+            status: "dnd",
+            type: ActivityType.Playing,
         },
         {
             name: "Spotify",
-            type: ActivityType.Listening
+            status: "dnd",
+            type: ActivityType.Listening,
         },
         {
-            name: "Twitch",
+            name: "Canlı",
             type: ActivityType.Streaming,
             url: "https://www.twitch.tv/drleventbatu"
         },
         {
-            name: "DCS Simulator",
-            type: ActivityType.Watching
-        }
+            name: "Twitch",
+            status: "dnd",
+            type: ActivityType.Watching,
+        },
     ];
 
-    client.user.setActivity(status[0]);
 
-	setInterval(() => {
-		let random = Math.floor(Math.random() * status.length);
-		client.user.setActivity(status[random]);
-	}, 60000);
+
+    randomOption = getRandomNumber(presenceOptions.length)
+    await client.user.setPresence({ status: presenceOptions[randomOption].status, activities: [presenceOptions[randomOption]] });
+
+	setInterval(async () => {
+        randomOption = getRandomNumber(presenceOptions.length)
+        await client.user.setPresence({ status: presenceOptions[randomOption].status, activities: [presenceOptions[randomOption]] });
+	}, 10000);
 }
