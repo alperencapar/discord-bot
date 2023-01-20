@@ -73,7 +73,7 @@ module.exports = {
 		try {
 			await targetUser.kick(reason);
 			await interaction.editReply(
-				`User, ${targetUser} kicked\nfor: ${reason}`
+				`User, ${targetUser} kicked.\nReason: ${reason}`
 			);
 		} catch (error) {
 			console.log(

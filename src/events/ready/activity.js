@@ -4,38 +4,52 @@ const getRandomOption = require("../../utils/getRandomOption");
 module.exports = async (client) => {
 	const presenceOptions = [
 		{
-			name: "Visual Studio Code",
-			status: "dnd",
-			type: ActivityType.Playing
+			activities: [
+				{
+					name: "Visual Studio Code",
+					type: ActivityType.Playing
+				}
+			],
+			status: "dnd"
 		},
+
 		{
-			name: "Spotify",
-			status: "dnd",
-			type: ActivityType.Listening
+			activities: [
+				{
+					name: "Spotify",
+					type: ActivityType.Listening
+				}
+			],
+			status: "dnd"
 		},
+
 		{
-			name: "Canlı",
-			type: ActivityType.Streaming,
-			url: "https://www.twitch.tv/drleventbatu"
+			activities: [
+				{
+					name: "Canlı",
+					type: ActivityType.Streaming,
+					url: "https://www.twitch.tv/drleventbatu"
+				}
+			]
 		},
+
 		{
-			name: "Twitch",
-			status: "dnd",
-			type: ActivityType.Watching
+			activities: [
+				{
+					name: "Twitch",
+					type: ActivityType.Watching
+				}
+			],
+			status: "dnd"
 		}
 	];
 
 	randomOption = getRandomOption(presenceOptions);
-	await client.user.setPresence({
-		status: randomOption.status,
-		activities: [randomOption]
-	});
+	await client.user.setPresence(randomOption);
 
 	setInterval(async () => {
 		randomOption = getRandomOption(presenceOptions);
-		await client.user.setPresence({
-			status: randomOption.status,
-			activities: [randomOption]
-		});
-	}, 100000);
+		await client.user.setPresence(randomOption);
+		console.log(randomOption);
+	}, 60000);
 };
