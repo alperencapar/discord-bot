@@ -50,6 +50,5 @@ module.exports = async (client) => {
 	setInterval(async () => {
 		randomOption = getRandomOption(presenceOptions);
 		await client.user.setPresence(randomOption);
-		console.log(randomOption);
 	}, 60000);
 };
