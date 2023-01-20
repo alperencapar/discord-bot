@@ -26,9 +26,11 @@ module.exports = {
 	callback: async (client, interaction) => {
 		const { channel, options } = interaction;
 		const messageCount = options.get("count").value;
-		const user = options.get("user")?.value;
+		const userID = options.get("user")?.value;
 
-		if (user) {
+		if (userID) {
+			user = await interaction.guild.members.fetch(userID)
+
 			let userMessages = [];
 			const messages = await channel.messages.fetch({
 				limit: messageCount
@@ -45,7 +47,7 @@ module.exports = {
 
 				i++;
 				messages.map((msg) => {
-					if (msg.author.id === user & !(userMessages.includes(msg))) {
+					if (msg.author.id === user.id & !(userMessages.includes(msg))) {
 						userMessages.length >= messageCount ? null : userMessages.push(msg)
 					}
 				});
@@ -55,13 +57,17 @@ module.exports = {
 			if(userMessages.length > 0) {
 				channel.bulkDelete(userMessages).then(() => {
 					interaction.reply(
-						`Kullanıcının silinen mesaj sayısı: ${userMessages.length}`
+						`${user.toString()} kullanıcısının silinen mesaj sayısı: ${userMessages.length}`
+					)
+				}).catch(() => {
+					interaction.reply(
+						`${user.toString()} kullanıcısının mesajları silinemiyor`
 					)
 				})
 				
 			} else {
 				interaction.reply(
-					`Kullanıcıya ait mesaj bulunamadı`
+					`${user.toString()} kullanıcısına ait mesaj bulunamadı`
 				);
 			}
 			
