@@ -1,6 +1,6 @@
 const {
 	Client,
-	Ineraction,
+	Interaction,
 	ApplicationCommandOptionType,
 	PermissionFlagsBits
 } = require("discord.js");
@@ -22,7 +22,7 @@ module.exports = {
 	/**
 	 *
 	 * @param {Client} client
-	 * @param {Ineraction} interaction
+	 * @param {Interaction} interaction
 	 */
 
 	callback: async (client, interaction) => {

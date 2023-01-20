@@ -1,7 +1,11 @@
 const { devs, testServer } = require("../../../config.json");
+const buttonInteractionHandler = require("../../handlers/buttonInteractionHandler");
 const getLocalCommands = require("../../utils/getLocalCommands");
 
 module.exports = async (client, interaction) => {
+
+	if (interaction.isButton()) buttonInteractionHandler(client, interaction)
+
 	if (!interaction.isChatInputCommand()) return;
 
 	const localCommands = getLocalCommands();
