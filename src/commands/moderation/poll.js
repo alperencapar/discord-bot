@@ -46,7 +46,7 @@ module.exports = {
 			}
 
 			const pollEmbed = {
-				color: 0x0099ff,
+				color: 0xff75ac,
 				title: "Anket!",
 				author: {
 					name: `${interaction.user.username}#${interaction.user.discriminator}`,
