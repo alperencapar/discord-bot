@@ -50,7 +50,7 @@ module.exports = {
 		}
 	],
 
-	permissionRequired: [PermissionFlagsBits.ManageRoles],
+	permissionsRequired: [PermissionFlagsBits.ManageRoles],
 	botPermissions: [PermissionFlagsBits.ManageRoles],
 
 

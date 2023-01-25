@@ -20,7 +20,7 @@ module.exports = {
 			required: false
 		}
 	],
-	permissionRequired: [PermissionFlagsBits.ManageMessages],
+	permissionsRequired: [PermissionFlagsBits.ManageMessages],
 	botPermissions: [PermissionFlagsBits.ManageMessages],
 
 	callback: async (client, interaction) => {
@@ -40,6 +40,8 @@ module.exports = {
 
 			while (userMessages.length < messageCount) {
 				if (i >= 10) break;
+
+				if (messageCount * i >= 100) break;
 
 				const messages = await channel.messages.fetch({
 					limit: messageCount * i

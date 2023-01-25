@@ -28,7 +28,7 @@ module.exports = {
 			required: false
 		}
 	],
-	permissionRequired: [PermissionFlagsBits.ModerateMembers],
+	permissionsRequired: [PermissionFlagsBits.ModerateMembers],
 	botPermissions: [PermissionFlagsBits.ModerateMembers],
 
 	/**

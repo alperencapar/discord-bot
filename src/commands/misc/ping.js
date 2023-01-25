@@ -3,7 +3,8 @@ module.exports = {
 	description: "Shows bot and user ping",
 	// devOnly: Boolean,
 	// testOnly: Boolean,
-	// options :
+	// deleted: Boolean,
+	// options:
 
 	callback: async (client, interaction) => {
 		interaction.deferReply();

@@ -22,7 +22,7 @@ module.exports = {
 			required: false
 		}
 	],
-	permissionRequired: [PermissionFlagsBits.SendMessages],
+	permissionsRequired: [PermissionFlagsBits.SendMessages],
 	botPermissions: [PermissionFlagsBits.EmbedLinks],
 
 	callback: async (client, interaction) => {

@@ -22,7 +22,7 @@ module.exports = {
 			required: false
 		}
 	],
-	permissionRequired: [PermissionFlagsBits.KickMembers],
+	permissionsRequired: [PermissionFlagsBits.KickMembers],
 	botPermissions: [PermissionFlagsBits.KickMembers],
 
 	/**
