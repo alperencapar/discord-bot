@@ -13,10 +13,12 @@ module.exports = (client) => {
 
 		const eventName = eventFolder.replace(/\\/g, "/").split("/").pop();
 
-		client.on(eventName, async (arg) => {
+		client.on(eventName, async (...arg) => {
 			for (const eventFile of eventFiles) {
 				const eventFunction = require(eventFile);
-				await eventFunction(client, arg);
+				// there are some events that gives 2 or more parameters. We check it from here and send it to event functions
+				// if event has 1 parameter, then send it as it is without inside of array(...)(because of spread)
+				arg.length > 1 ? await eventFunction(client, arg) : await eventFunction(client, arg[0]);
 			}
 		});
 	}

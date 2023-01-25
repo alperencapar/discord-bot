@@ -17,10 +17,10 @@ module.exports = async (client, interaction) => {
 
 		if (!commandObject) return;
 
-		if (commandObject.devOnly) {
+		if (commandObject?.devOnly) {
 			if (!devs.includes(interaction.member.id)) {
 				interaction.reply({
-					content: "Only developers are allowed to run this command.",
+					content: "Only developers are allowed to run this command.(command is currently under development/testing stage)",
 					ephemeral: true
 				});
 				return;
@@ -30,7 +30,7 @@ module.exports = async (client, interaction) => {
 		if (commandObject.testOnly) {
 			if (!(interaction.guild.id === testServer)) {
 				interaction.reply({
-					content: "This command cannot be ran here.",
+					content: "This command cannot be ran here.(command is currently under development/testing stage)",
 					ephemeral: true
 				});
 				return;
@@ -41,7 +41,7 @@ module.exports = async (client, interaction) => {
 			for (const permission of commandObject.permissionsRequired) {
 				if (!interaction.member.permissions.has(permission)) {
 					interaction.reply({
-						content: "Not enough permissions.",
+						content: "You do not have enough permissions.",
 						ephemeral: true
 					});
 					return;
