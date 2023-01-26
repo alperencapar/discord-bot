@@ -1,8 +1,8 @@
 module.exports = async (member) => {
     const guildOwnerID = member.guild.ownerId
 	let guildOwner = await member.guild.members.fetch(guildOwnerID)
+	const guildOwnerNickname = guildOwner.nickname || guildOwner.user.username
 	guildOwner = guildOwner.user
-	const guildOwnerNickname = guildOwner.nickname || guildOwner.username
 
     // check is user imitating the owner of server
 	if (member.user.id != guildOwner.id) {
@@ -11,7 +11,6 @@ module.exports = async (member) => {
 		}
 
 		if (member.nickname?.toLowerCase() === guildOwnerNickname.toLowerCase()) {
-			console.log("if 2")
 			await member.setNickname(`FAKE ${member.nickname}!`)
 		}
 
