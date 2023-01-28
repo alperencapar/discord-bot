@@ -10,7 +10,7 @@ module.exports = async (client, message) => {
         if (clearedMessageContent.includes("günaydın")) {
             const emoji = message.guild.emojis.cache.find(
                 (emoji) => emoji.name === "sakinle"
-            );
+            ) || "☕"
             // message.react("☕");
             message.react(emoji);
         }

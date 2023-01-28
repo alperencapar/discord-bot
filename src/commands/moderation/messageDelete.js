@@ -9,7 +9,7 @@ module.exports = {
 	options: [
 		{
 			name: "count",
-			description: "Number of message you want to delete",
+			description: "Number of message you want to delete(max number is 99)",
 			type: ApplicationCommandOptionType.Integer,
 			required: true
 		},
@@ -25,8 +25,10 @@ module.exports = {
 
 	callback: async (client, interaction) => {
 		const { channel, options } = interaction;
-		const messageCount = options.get("count").value;
+		let messageCount = options.get("count").value;
 		const userID = options.get("user")?.value;
+
+		if (messageCount > 100) messageCount = 99;
 
 		if (userID) {
 			user = await interaction.guild.members.fetch(userID)
@@ -57,25 +59,25 @@ module.exports = {
 
 
 			if(userMessages.length > 0) {
-				channel.bulkDelete(userMessages).then(() => {
-					interaction.reply(
+				channel.bulkDelete(userMessages).then(async () => {
+					await interaction.reply(
 						`${user.toString()} kullanıcısının silinen mesaj sayısı: ${userMessages.length}`
 					)
-				}).catch(() => {
-					interaction.reply(
+				}).catch(async () => {
+					await interaction.reply(
 						`${user.toString()} kullanıcısının mesajları silinemiyor`
 					)
 				})
 				
 			} else {
-				interaction.reply(
+				await interaction.reply(
 					`${user.toString()} kullanıcısına ait mesaj bulunamadı`
 				);
 			}
 			
 		} else {
 			await channel.bulkDelete(messageCount + 1, true);
-			interaction.reply(`Silinen mesaj sayısı: ${messageCount}`);
+			await interaction.reply(`Silinen mesaj sayısı: ${messageCount}`);
 		}
 
 		// const botMsg = await messages.find(
