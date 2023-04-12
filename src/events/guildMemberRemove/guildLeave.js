@@ -1,13 +1,15 @@
 // const {	EmbedBuilder } = require("@discordjs/builders");
 
 const { EmbedBuilder } = require("@discordjs/builders")
-const guildUserCountHandler = require("../../handlers/guildUserCountHandler")
 const { findRecord } = require("../../handlers/dbHandler")
+const { PermissionFlagsBits } = require("discord.js")
+const LogId = require("../../models/channelLogId")
+const guildUserCountHandler = require("../../handlers/guildUserCountHandler")
 
-module.exports = async (client, member) => {
-	console.log("guildMemberRemove")
+module.exports = async (client, member, missingPermissions) => {
+	// await guildUserCountHandler(member)
 
-	await guildUserCountHandler(member)
+	const guildUserCount = member.guild.memberCount
 
 	const userAvatar = member.user.displayAvatarURL({
 		format: "jpg",
@@ -77,10 +79,16 @@ module.exports = async (client, member) => {
 			let logChannel = await member.guild.channels.fetch(
 				logSettings.joinLeaveChannelId
 			)
-			await logChannel.send({ embeds: [embed] })
+			if (!missingPermissions?.includes("EmbedLinks"))
+				await logChannel.send({
+					embeds: [embed],
+					content: `Sunucu üye sayısı: ${guildUserCount}`,
+				})
 		}
 	} catch (error) {
 		console.log("Error at nickname protection")
 		console.log(`Detail: \n\n\n ${error}`)
 	}
 }
+
+module.exports.botPermissions = [PermissionFlagsBits.EmbedLinks]

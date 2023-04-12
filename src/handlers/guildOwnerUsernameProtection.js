@@ -7,7 +7,7 @@ module.exports = async (member) => {
 	const guildOwnerNickname = guildOwner.nickname || guildOwner.user.username
 	guildOwner = guildOwner.user
 
-	const bot = newMember.guild.members.me
+	const bot = member.guild.members.me
 
 	const neededPermissions = [PermissionFlagsBits.ManageNicknames]
 

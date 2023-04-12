@@ -39,6 +39,8 @@ module.exports = {
 			let messageCount = options.get("count").value
 			const userID = options.get("user")?.value
 
+			await interaction.deferReply()
+
 			if (messageCount > 100) messageCount = 99
 
 			if (userID) {
@@ -52,9 +54,8 @@ module.exports = {
 				let i = 1
 
 				while (userMessages.length < messageCount) {
+					if (messageCount * i >= 99) break
 					if (i >= 10) break
-
-					if (messageCount * i >= 100) break
 
 					const messages = await channel.messages.fetch({
 						limit: messageCount * i,
@@ -77,35 +78,37 @@ module.exports = {
 					channel
 						.bulkDelete(userMessages)
 						.then(async () => {
-							await interaction.reply(
+							await interaction.editReply(
 								`${user.toString()} kullanıcısının silinen mesaj sayısı: ${
 									userMessages.length
 								}`
 							)
 						})
 						.catch(async () => {
-							await interaction.reply(
+							await interaction.editReply(
 								`${user.toString()} kullanıcısının mesajları silinemiyor`
 							)
 						})
 				} else {
-					await interaction.reply(
+					await interaction.editReply(
 						`${user.toString()} kullanıcısına ait mesaj bulunamadı`
 					)
 				}
 			} else {
-				await channel.bulkDelete(messageCount, true)
-				await interaction.reply(`Silinen mesaj sayısı: ${messageCount}`)
+				await channel.bulkDelete(messageCount + 1, true)
+				await interaction.editReply(
+					`Silinen mesaj sayısı: ${messageCount}`
+				)
 			}
 
-			setTimeout(() => {
-				interaction.editReply(
+			setTimeout(async () => {
+				await interaction.editReply(
 					"Birkaç saniye sonra bu mesaj kendini yok edecek!"
 				)
 			}, 4000)
 
-			setTimeout(() => {
-				interaction.deleteReply()
+			setTimeout(async () => {
+				await interaction.deleteReply()
 			}, 8000)
 		} catch (error) {
 			const ErrFileLocation = __dirname + __filename

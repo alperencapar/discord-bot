@@ -6,10 +6,6 @@ const {
 } = require("discord.js")
 const LogId = require("../../models/channelLogId")
 const guildOwnerUsernameProtection = require("../../handlers/guildOwnerUsernameProtection")
-const {
-	userHasPermission,
-	checkMissingPermission,
-} = require("../../handlers/eventPermissionHandler")
 const { findRecord } = require("../../handlers/dbHandler")
 
 /**
@@ -17,24 +13,12 @@ const { findRecord } = require("../../handlers/dbHandler")
  * @param {Client} client
  * @param {GuildMember} member
  */
-module.exports = async (client, member) => {
+module.exports = async (client, member, missingPermissions = []) => {
 	const [oldMember, newMember] = member
 	const bot = newMember.guild.members.me
-	const neededPermissions = [
-		PermissionFlagsBits.SendMessages,
-		PermissionFlagsBits.EmbedLinks,
-	]
 
-	const missingPermissions = await checkMissingPermission(
-		bot,
-		neededPermissions
-	)
-
-	let isBotHasPermission = await userHasPermission(bot, neededPermissions)
-
-	// console.log(missingPermissions)
-
-	guildOwnerUsernameProtection(newMember)
+	if (!missingPermissions?.includes("ManageNicknames"))
+		guildOwnerUsernameProtection(newMember)
 
 	const userAvatar = newMember.user.displayAvatarURL({
 		format: "jpg",
@@ -82,7 +66,8 @@ module.exports = async (client, member) => {
 					logSettings.moderationLogChannelId
 				)
 
-				await logChannel.send({ embeds: [embed] })
+				if (!missingPermissions?.includes("EmbedLinks"))
+					await logChannel.send({ embeds: [embed] })
 			}
 		} catch (error) {
 			console.log("Error at nickname protection")
@@ -90,3 +75,8 @@ module.exports = async (client, member) => {
 		}
 	}
 }
+
+module.exports.botPermissions = [
+	PermissionFlagsBits.EmbedLinks,
+	PermissionFlagsBits.ManageNicknames,
+]
