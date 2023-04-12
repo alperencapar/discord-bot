@@ -1,3 +1,5 @@
+const errorFileLogHandler = require("../../handlers/errorFileLogHandler")
+
 module.exports = {
 	name: "ping",
 	description: "Shows bot and user ping",
@@ -7,12 +9,17 @@ module.exports = {
 	// options:
 
 	callback: async (client, interaction) => {
-		interaction.deferReply();
-		const reply = await interaction.fetchReply();
-		const ping = reply.createdTimestamp - interaction.createdTimestamp;
+		try {
+			interaction.deferReply()
+			const reply = await interaction.fetchReply()
+			const ping = reply.createdTimestamp - interaction.createdTimestamp
 
-		interaction.editReply(
-			`Bot Ping: ${ping}ms. | Websocket: ${client.ws.ping}ms`
-		);
-	}
-};
+			interaction.editReply(
+				`Bot Ping: ${ping}ms. | Websocket: ${client.ws.ping}ms`
+			)
+		} catch (error) {
+			const ErrFileLocation = __dirname + __filename
+			errorFileLogHandler(error, ErrFileLocation, interaction)
+		}
+	},
+}

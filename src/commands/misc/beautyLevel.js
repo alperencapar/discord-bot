@@ -1,5 +1,5 @@
-const { EmbedBuilder, ApplicationCommandOptionType } = require("discord.js");
-const randomNumberGenerate = require("../../utils/randomNumberGenerate");
+const { EmbedBuilder, ApplicationCommandOptionType } = require("discord.js")
+const randomNumberGenerate = require("../../utils/randomNumberGenerate")
 
 module.exports = {
 	name: "güzellik",
@@ -9,19 +9,21 @@ module.exports = {
 			name: "user",
 			description: "User that you want to check beauty level",
 			type: ApplicationCommandOptionType.User,
-			required: false
-		}
+			required: false,
+		},
 	],
 
 	callback: async (client, interaction) => {
-		await interaction.deferReply();
-        await interaction.editReply(`${interaction.user.toString()} güzellik ortalamanız hesaplanıyor...`)
+		await interaction.deferReply()
+		await interaction.editReply(
+			`${interaction.user.toString()} güzellik ortalamanız hesaplanıyor...`
+		)
 
-		const targetUserId = interaction.options.get("user")?.value;
+		const targetUserId = interaction.options.get("user")?.value
 		let targetUser = interaction.user
 		let targetUserNickname = interaction.nickname
 
-		let randomNumbers = await randomNumberGenerate(99, 10)
+		let randomNumbers = await randomNumberGenerate(120, 10)
 		let total = 0
 
 		for (const num of randomNumbers) {
@@ -32,50 +34,53 @@ module.exports = {
 		beautyMeter = parseFloat(beautyMeter.toFixed(2))
 
 		let answer = `%${beautyMeter}`
-		
+
 		if (beautyMeter >= 75) {
-			answer = `%${beautyMeter}\nVuhuuu 🤩 Güzelsin hee`
+			answer = `%${beautyMeter}\nVuhuuu 🤩`
 		} else if (beautyMeter >= 50 && beautyMeter < 75) {
-			answer = `%${beautyMeter}\nGüzelsin be😇`
+			answer = `%${beautyMeter}\n😇`
 		} else if (beautyMeter >= 30 && beautyMeter < 50) {
 			answer = `%${beautyMeter}\n🤠`
-		} else if (beautyMeter <= 30 ) {
-			answer = `%${beautyMeter}\nGüzelleşirsin be🤠`
+		} else if (beautyMeter <= 30) {
+			answer = `%${beautyMeter}\n🤓`
 		}
 
-		
-		if(targetUserId) {
-			targetUser = await interaction.guild.members.fetch(targetUserId);
+		if (beautyMeter > 100) answer = `%99.9\nAkıllara zarar 🤙`
+
+		if (targetUserId) {
+			targetUser = await interaction.guild.members.fetch(targetUserId)
 			targetUserNickname = targetUser.nickname
-			
-		} 
-		
+		}
+
 		let userAvatar = targetUser.displayAvatarURL({
 			format: "jpg",
-			size: 128
-		});
+			size: 128,
+		})
 
 		const beautyEmbed = {
 			color: 0xff75ac,
 			author: {
-                name: `${targetUserNickname || targetUser.username || targetUser.user.username}`,
-				icon_url: userAvatar
+				name: `${
+					targetUserNickname ||
+					targetUser.username ||
+					targetUser.user.username
+				}`,
+				icon_url: userAvatar,
 			},
 			thumbnail: {
-				url: userAvatar
+				url: userAvatar,
 			},
 			fields: [
 				{
 					name: "Güzellik Seviyesi:",
-					value: answer
-				}
+					value: answer,
+				},
 			],
+		}
 
-		};
-
-		await interaction.editReply(
-			{ embeds: [beautyEmbed], content: `${targetUser.toString()} güzellik ortalaması hesaplandı🎉`}
-		);
-
-	}
-};
+		await interaction.editReply({
+			embeds: [beautyEmbed],
+			content: `${targetUser.toString()} güzellik ortalaması hesaplandı🎉`,
+		})
+	},
+}
