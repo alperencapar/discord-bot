@@ -21,6 +21,7 @@ module.exports = {
 			size: 4096,
 		})
 
+		await interaction.channel.sendTyping()
 		await interaction.deferReply()
 
 		const embed = new EmbedBuilder()

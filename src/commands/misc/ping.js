@@ -1,3 +1,4 @@
+const { Client, CommandInteraction } = require("discord.js")
 const errorFileLogHandler = require("../../handlers/errorFileLogHandler")
 
 module.exports = {
@@ -10,11 +11,12 @@ module.exports = {
 
 	callback: async (client, interaction) => {
 		try {
-			interaction.deferReply()
+			await interaction.channel.sendTyping()
+			await interaction.deferReply()
 			const reply = await interaction.fetchReply()
 			const ping = reply.createdTimestamp - interaction.createdTimestamp
 
-			interaction.editReply(
+			await interaction.editReply(
 				`Bot Ping: ${ping}ms. | Websocket: ${client.ws.ping}ms`
 			)
 		} catch (error) {

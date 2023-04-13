@@ -39,6 +39,7 @@ module.exports = {
 			let messageCount = options.get("count").value
 			const userID = options.get("user")?.value
 
+			await interaction.channel.sendTyping()
 			await interaction.deferReply()
 
 			if (messageCount > 100) messageCount = 99

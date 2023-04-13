@@ -39,6 +39,8 @@ module.exports = async (client, message) => {
 				level.xp = remainingXp
 				level.level += 1
 
+				await interaction.channel.sendTyping()
+
 				let logSettings = await findRecord(LogId, {
 					guildId: message.guild.id,
 				})

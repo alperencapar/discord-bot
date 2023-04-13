@@ -14,6 +14,7 @@ module.exports = {
 	],
 
 	callback: async (client, interaction) => {
+		await interaction.channel.sendTyping()
 		await interaction.deferReply()
 		await interaction.editReply(
 			`${interaction.user.toString()} güzellik ortalamanız hesaplanıyor...`

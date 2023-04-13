@@ -41,7 +41,9 @@ module.exports = {
 	 */
 	callback: async (client, interaction) => {
 		if (!interaction.inGuild()) {
-			interaction.reply("Bu komutu sadece sunucuda çalıştırabilirsin")
+			await interaction.reply(
+				"Bu komutu sadece sunucuda çalıştırabilirsin"
+			)
 			return
 		}
 
@@ -54,6 +56,7 @@ module.exports = {
 
 		try {
 			await interaction.deferReply()
+			await interaction.channel.sendTyping()
 
 			let logSettings = await findRecord(LogId, {
 				guildId: interaction.guild.id,
@@ -82,7 +85,7 @@ module.exports = {
 
 			await logSettings.save()
 
-			interaction.editReply(`kayıt başarı ile yapıldı.`)
+			await interaction.editReply(`kayıt başarı ile yapıldı.`)
 		} catch (error) {
 			console.log(
 				`Error at saving log channel settings to db. Error: ${error}`

@@ -43,6 +43,7 @@ module.exports = {
 		const reason =
 			interaction.options.get("reason")?.value || "No reason given."
 
+		await interaction.channel.sendTyping()
 		await interaction.deferReply()
 
 		const targetUser = await interaction.guild.members.fetch(targetUserId)

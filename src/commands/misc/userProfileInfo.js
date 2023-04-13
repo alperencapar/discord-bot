@@ -25,6 +25,7 @@ module.exports = {
 			size: 4096,
 		})
 
+		await interaction.channel.sendTyping()
 		await interaction.deferReply()
 
 		// if user has roles, return roles, if not roles is equal to "None"

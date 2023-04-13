@@ -21,16 +21,17 @@ module.exports = {
 
 	callback: async (client, interaction) => {
 		if (!interaction.inGuild()) {
-			interaction.reply("You can ran this command inside a server!")
+			await interaction.reply("You can ran this command inside a server!")
 		}
 
 		if (cooldowns.has(interaction.member.id)) {
-			interaction.reply(
+			await interaction.reply(
 				"Sorgulama yapmanız kısıtlandı, lütfen birkaç dakika bekleyin."
 			)
 			return
 		}
 
+		await interaction.channel.sendTyping()
 		await interaction.deferReply()
 
 		const mentionedUserId = interaction.options.get("user")?.value
@@ -44,7 +45,7 @@ module.exports = {
 		})
 
 		if (!fetchLevel) {
-			interaction.editReply(
+			await interaction.editReply(
 				mentionedUserId
 					? `${targetUser.user.tag} kullanıcısının henüz leveli yok!`
 					: `"Henüz leveliniz bulunmuyor`
@@ -93,7 +94,7 @@ module.exports = {
 		const data = await rank.build()
 		const attachment = new AttachmentBuilder(data)
 
-		interaction.editReply({ files: [attachment] })
+		await interaction.editReply({ files: [attachment] })
 
 		cooldowns.add(interaction.member.id)
 		setTimeout(() => {
