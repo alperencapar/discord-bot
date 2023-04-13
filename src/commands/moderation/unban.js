@@ -5,6 +5,7 @@ const {
 	PermissionFlagsBits,
 } = require("discord.js")
 const { userHasPermission } = require("../../handlers/eventPermissionHandler")
+const errorFileLogHandler = require("../../handlers/errorFileLogHandler")
 
 module.exports = {
 	name: "unban",
@@ -59,7 +60,8 @@ module.exports = {
 				)
 			}
 		} catch (error) {
-			console.log(`error while unbanning\n${error}`)
+			const ErrFileLocation = __dirname + __filename
+			errorFileLogHandler(error, ErrFileLocation, interaction)
 		}
 	},
 }

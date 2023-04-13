@@ -7,6 +7,7 @@ const {
 } = require("discord.js")
 const { findRecord } = require("../../handlers/dbHandler")
 const LogId = require("../../models/channelLogId")
+const errorFileLogHandler = require("../../handlers/errorFileLogHandler")
 
 module.exports = {
 	name: "ban",
@@ -128,9 +129,8 @@ module.exports = {
 				await logChannel.send({ embeds: [embed] })
 			}
 		} catch (error) {
-			console.log(
-				`Error at banning user from src/commands/moderation/ban.js.\nError: ${error}`
-			)
+			const ErrFileLocation = __dirname + __filename
+			errorFileLogHandler(error, ErrFileLocation, interaction)
 		}
 	},
 }

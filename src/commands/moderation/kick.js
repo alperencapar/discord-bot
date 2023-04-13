@@ -7,6 +7,7 @@ const {
 } = require("discord.js")
 const LogId = require("../../models/channelLogId")
 const { findRecord } = require("../../handlers/dbHandler")
+const errorFileLogHandler = require("../../handlers/errorFileLogHandler")
 
 module.exports = {
 	name: "kick",
@@ -126,9 +127,8 @@ module.exports = {
 				await logChannel.send({ embeds: [embed] })
 			}
 		} catch (error) {
-			console.log(
-				`Error at kick user from src/commands/moderation/kick.js.\nError: ${error}`
-			)
+			const ErrFileLocation = __dirname + __filename
+			errorFileLogHandler(error, ErrFileLocation, interaction)
 		}
 	},
 }

@@ -4,6 +4,7 @@ const {
 	ApplicationCommandOptionType,
 	PermissionFlagsBits,
 } = require("discord.js")
+const errorFileLogHandler = require("../../handlers/errorFileLogHandler")
 
 module.exports = {
 	name: "untimeout",
@@ -67,9 +68,8 @@ module.exports = {
 				`Removed ${targetUser}'s timeout .\nReason: ${reason}`
 			)
 		} catch (error) {
-			console.log(
-				`Error at untimeout user from src/commands/moderation/untimeout.js.\nError: ${error}`
-			)
+			const ErrFileLocation = __dirname + __filename
+			errorFileLogHandler(error, ErrFileLocation, interaction)
 		}
 	},
 }

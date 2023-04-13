@@ -84,9 +84,8 @@ module.exports = {
 				`${targetUser} has timeouted for ${minutes} minutes.\nReason: ${reason}`
 			)
 		} catch (error) {
-			console.log(
-				`Error at timeout user from src/commands/moderation/timeout.js.\nError: ${error}`
-			)
+			const ErrFileLocation = __dirname + __filename
+			errorFileLogHandler(error, ErrFileLocation, interaction)
 		}
 	},
 }

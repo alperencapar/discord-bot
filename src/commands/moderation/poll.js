@@ -67,7 +67,8 @@ module.exports = {
 			await poll.react("✅")
 			await poll.react("❌")
 		} catch (error) {
-			console.log(`Error at commands/misc/poll.js\n\nError: ${error}`)
+			const ErrFileLocation = __dirname + __filename
+			errorFileLogHandler(error, ErrFileLocation, interaction)
 		}
 	},
 }
