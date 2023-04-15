@@ -53,7 +53,18 @@ module.exports = {
 		}
 
 		if (targetUser.id === interaction.guild.ownerId) {
-			await interaction.editReply("Server owner can't be banned 🧠")
+			await interaction.editReply({
+				content: "Server owner can't be banned 🧠",
+				ephemeral: true,
+			})
+			return
+		}
+
+		if (targetUser.id == interaction.user.id) {
+			await interaction.editReply({
+				content: "You can't ban yourself 🧠",
+				ephemeral: true,
+			})
 			return
 		}
 
@@ -65,15 +76,19 @@ module.exports = {
 			interaction.guild.members.me.roles.highest.position
 
 		if (targetUserRolePosition >= requestUserRolePosition) {
-			await interaction.editReply(
-				"You can't ban that user, beacause user is same/higher role than you"
-			)
+			await interaction.editReply({
+				content:
+					"You can't ban that user, beacause user is same/higher role than you 📈",
+				ephemeral: true,
+			})
 			return
 		}
 		if (targetUserRolePosition >= botRolePosition) {
-			await interaction.editReply(
-				"I can't ban that user, beacause user is same/higher role than me"
-			)
+			await interaction.editReply({
+				content:
+					"I can't ban that user, beacause user is same/higher role than me 📈",
+				ephemeral: true,
+			})
 			return
 		}
 

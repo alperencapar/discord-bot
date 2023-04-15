@@ -4,8 +4,9 @@ const guildUserCountHandler = require("../../handlers/guildUserCountHandler")
 const { findRecord } = require("../../handlers/dbHandler")
 const { PermissionFlagsBits } = require("discord.js")
 const errorFileLogHandler = require("../../handlers/errorFileLogHandler")
+const guildOwnerUsernameProtection = require("../../handlers/guildOwnerUsernameProtection")
 
-module.exports = async (client, member, missingPermissions) => {
+module.exports = async (client, member, missingPermissions = []) => {
 	// await guildUserCountHandler(member)
 
 	const guildUserCount = member.guild.memberCount
@@ -14,6 +15,9 @@ module.exports = async (client, member, missingPermissions) => {
 		format: "jpg",
 		size: 4096,
 	})
+
+	if (!missingPermissions?.includes("ManageNicknames"))
+		guildOwnerUsernameProtection(member)
 
 	const roles =
 		member._roles.length > 0
@@ -78,4 +82,7 @@ module.exports = async (client, member, missingPermissions) => {
 	}
 }
 
-module.exports.botPermissions = [PermissionFlagsBits.EmbedLinks]
+module.exports.botPermissions = [
+	PermissionFlagsBits.EmbedLinks,
+	PermissionFlagsBits.ManageNicknames,
+]

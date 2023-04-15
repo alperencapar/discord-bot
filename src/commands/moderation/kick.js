@@ -55,6 +55,14 @@ module.exports = {
 			return
 		}
 
+		if (targetUser.id == interaction.user.id) {
+			await interaction.editReply({
+				content: "You can't kick yourself 🧠",
+				ephemeral: true,
+			})
+			return
+		}
+
 		//highest roles of target user, request user and bot
 		const targetUserRolePosition = targetUser.roles.highest.position
 		const requestUserRolePosition =
@@ -63,15 +71,19 @@ module.exports = {
 			interaction.guild.members.me.roles.highest.position
 
 		if (targetUserRolePosition >= requestUserRolePosition) {
-			await interaction.editReply(
-				"You can't kick that user, beacause user is same/higher role than you"
-			)
+			await interaction.editReply({
+				content:
+					"You can't kick that user, beacause user is same/higher role than you 📈",
+				ephemeral: true,
+			})
 			return
 		}
 		if (targetUserRolePosition >= botRolePosition) {
-			await interaction.editReply(
-				"I can't kick that user, beacause user is same/higher role than me"
-			)
+			await interaction.editReply({
+				content:
+					"I can't kick that user, beacause user is same/higher role than me 📈",
+				ephemeral: true,
+			})
 			return
 		}
 
