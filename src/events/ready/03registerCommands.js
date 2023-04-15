@@ -1,5 +1,6 @@
 // const GuildInfo = require("../../models/GuildInfo");
 // const { testServer } = require("../../../config.json");
+const errorFileLogHandler = require("../../handlers/errorFileLogHandler")
 const areCommandsDifferent = require("../../utils/areCommandsDifferent")
 const getApplicationCommands = require("../../utils/getApplicationCommands")
 const getLocalCommands = require("../../utils/getLocalCommands")
@@ -52,5 +53,8 @@ module.exports = async (client) => {
 		}
 	} catch (error) {
 		console.log(`There was an error at running command. Error: ${error}`)
+		const ErrFileLocation = __dirname + __filename
+
+		errorFileLogHandler(error, ErrFileLocation, "registerCommands.js")
 	}
 }

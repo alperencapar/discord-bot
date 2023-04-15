@@ -7,6 +7,7 @@ const {
 
 const LogId = require("../../models/channelLogId")
 const { findRecord, createRecord } = require("../../handlers/dbHandler")
+const errorFileLogHandler = require("../../handlers/errorFileLogHandler")
 
 module.exports = {
 	name: "log-config",
@@ -90,6 +91,8 @@ module.exports = {
 			console.log(
 				`Error at saving log channel settings to db. Error: ${error}`
 			)
+			const ErrFileLocation = __dirname + __filename
+			errorFileLogHandler(error, ErrFileLocation, interaction)
 		}
 	},
 }

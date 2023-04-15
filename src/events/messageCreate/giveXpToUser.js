@@ -6,6 +6,7 @@ const cooldowns = new Set()
 
 const { Client, Message } = require("discord.js")
 const { findRecord, createRecord } = require("../../handlers/dbHandler")
+const errorFileLogHandler = require("../../handlers/errorFileLogHandler")
 /**
  *
  * @param {Client} client
@@ -85,5 +86,7 @@ module.exports = async (client, message) => {
 		}
 	} catch (error) {
 		console.log(`Error on giving xp: ${error}`)
+		const ErrFileLocation = __dirname + __filename
+		errorFileLogHandler(error, ErrFileLocation, "giveXpToUser.js")
 	}
 }

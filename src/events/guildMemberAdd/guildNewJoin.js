@@ -3,6 +3,7 @@ const LogId = require("../../models/channelLogId")
 const guildUserCountHandler = require("../../handlers/guildUserCountHandler")
 const { findRecord } = require("../../handlers/dbHandler")
 const { PermissionFlagsBits } = require("discord.js")
+const errorFileLogHandler = require("../../handlers/errorFileLogHandler")
 
 module.exports = async (client, member, missingPermissions) => {
 	// await guildUserCountHandler(member)
@@ -71,8 +72,9 @@ module.exports = async (client, member, missingPermissions) => {
 				})
 		}
 	} catch (error) {
-		console.log("Error at nickname protection")
 		console.log(`Detail: \n\n\n ${error}`)
+		const ErrFileLocation = __dirname + __filename
+		errorFileLogHandler(error, ErrFileLocation, "guildNewJoin.js")
 	}
 }
 

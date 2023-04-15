@@ -1,10 +1,9 @@
 const { devs, testServer } = require("../../../config.json")
-const buttonInteractionHandler = require("../../handlers/buttonInteractionHandler")
+const buttonInteractionHandler = require("./01buttonInteractionHandler")
+const errorFileLogHandler = require("../../handlers/errorFileLogHandler")
 const getLocalCommands = require("../../utils/getLocalCommands")
 
 module.exports = async (client, interaction) => {
-	if (interaction.isButton()) buttonInteractionHandler(client, interaction)
-
 	if (!interaction.isChatInputCommand()) return
 
 	const localCommands = getLocalCommands()
@@ -67,5 +66,7 @@ module.exports = async (client, interaction) => {
 		await commandObject.callback(client, interaction)
 	} catch (error) {
 		console.log(`There was an error running this command: ${error}`)
+		const ErrFileLocation = __dirname + __filename
+		errorFileLogHandler(error, ErrFileLocation, "handleCommands.js")
 	}
 }

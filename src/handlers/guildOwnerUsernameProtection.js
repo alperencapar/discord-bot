@@ -1,5 +1,6 @@
 const { PermissionFlagsBits } = require("discord.js")
 const { userHasPermission } = require("./eventPermissionHandler")
+const errorFileLogHandler = require("./errorFileLogHandler")
 
 module.exports = async (member) => {
 	const guildOwnerID = member.guild.ownerId
@@ -43,8 +44,8 @@ module.exports = async (member) => {
 					: null
 			}
 		} catch (error) {
-			console.log("not enough permission to change nickname of user")
-			console.log(error)
+			const ErrFileLocation = __dirname + __filename
+			errorFileLogHandler(error, ErrFileLocation, member)
 		}
 	}
 }

@@ -1,6 +1,7 @@
 const { Client, Guild } = require("discord.js")
 const GuildInfo = require("../../models/GuildInfo")
 const { findRecord, createRecord } = require("../../handlers/dbHandler")
+const errorFileLogHandler = require("../../handlers/errorFileLogHandler")
 
 module.exports = async (client, guild) => {
 	const query = {
@@ -19,5 +20,7 @@ module.exports = async (client, guild) => {
 	} catch (error) {
 		console.log("Error saving guild id(db)")
 		console.log(`ERROR DETAILS: \n\n${error}`)
+		const ErrFileLocation = __dirname + __filename
+		errorFileLogHandler(error, ErrFileLocation, guild)
 	}
 }

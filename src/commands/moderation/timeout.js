@@ -4,6 +4,7 @@ const {
 	ApplicationCommandOptionType,
 	PermissionFlagsBits,
 } = require("discord.js")
+const errorFileLogHandler = require("../../handlers/errorFileLogHandler")
 
 module.exports = {
 	name: "timeout",
