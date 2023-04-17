@@ -31,24 +31,27 @@ module.exports = {
 	 *
 	 * @param {Client} client
 	 * @param {Interaction} interaction
+	 * @returns
 	 */
 
 	callback: async (client, interaction) => {
+		if (!interaction.inGuild()) return
+		const { channel, options } = interaction
+		let messageCount = options.get("count").value
+		const userID = options.get("user")?.value
+
+		await channel.sendTyping()
+		// await interaction.deferReply()
+
+		if (messageCount > 100) messageCount = 99
+
 		try {
-			const { channel, options } = interaction
-			let messageCount = options.get("count").value
-			const userID = options.get("user")?.value
-
-			await interaction.channel.sendTyping()
-			await interaction.deferReply()
-
-			if (messageCount > 100) messageCount = 99
-
 			if (userID) {
 				user = await interaction.guild.members.fetch(userID)
 
 				let userMessages = []
-				const messages = await channel.messages.fetch({
+				let messages
+				messages = await channel.messages.fetch({
 					limit: messageCount,
 				})
 
@@ -58,7 +61,7 @@ module.exports = {
 					if (messageCount * i >= 99) break
 					if (i >= 10) break
 
-					const messages = await channel.messages.fetch({
+					messages = await channel.messages.fetch({
 						limit: messageCount * i,
 					})
 
@@ -78,27 +81,32 @@ module.exports = {
 				if (userMessages.length > 0) {
 					channel
 						.bulkDelete(userMessages)
-						.then(async () => {
-							await interaction.editReply(
+						.then(async (msg) => {
+							console.log()
+							console.log("\n\n\n")
+							await interaction.reply(
 								`${user.toString()} kullanıcısının silinen mesaj sayısı: ${
-									userMessages.length
+									msg.size
 								}`
 							)
 						})
 						.catch(async () => {
-							await interaction.editReply(
+							await interaction.reply(
 								`${user.toString()} kullanıcısının mesajları silinemiyor`
 							)
 						})
 				} else {
-					await interaction.editReply(
+					await interaction.reply(
 						`${user.toString()} kullanıcısına ait mesaj bulunamadı`
 					)
 				}
 			} else {
-				await channel.bulkDelete(messageCount + 1, true)
-				await interaction.editReply(
-					`Silinen mesaj sayısı: ${messageCount}`
+				const deletedMsgCount = await channel.bulkDelete(
+					messageCount + 1,
+					true
+				)
+				interaction.reply(
+					`Silinen mesaj sayısı: ${deletedMsgCount.size}`
 				)
 			}
 

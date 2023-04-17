@@ -1,5 +1,5 @@
 const { Client, ButtonInteraction } = require("discord.js")
-const errorFileLogHandler = require("../../handlers/errorFileLogHandler")
+const errorFileLogHandler = require("./errorFileLogHandler")
 
 module.exports = async (client, interaction) => {
 	// await interaction.deferReply({ ephemeral: true })

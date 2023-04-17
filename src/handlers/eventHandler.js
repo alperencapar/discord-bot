@@ -34,12 +34,11 @@ module.exports = (client) => {
 								arg[0],
 								missingPermissions
 						  )
-					return
+				} else {
+					arg.length > 1
+						? await eventFunction(client, arg)
+						: await eventFunction(client, arg[0])
 				}
-
-				arg.length > 1
-					? await eventFunction(client, arg)
-					: await eventFunction(client, arg[0])
 			}
 		})
 	}

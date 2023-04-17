@@ -8,12 +8,15 @@ const errorFileLogHandler = require("./src/handlers/errorFileLogHandler")
 const client = new Client({
 	intents: [
 		GatewayIntentBits.Guilds,
+		GatewayIntentBits.GuildBans,
+		GatewayIntentBits.GuildMembers,
+		GatewayIntentBits.GuildInvites,
 		GatewayIntentBits.GuildMessages,
 		GatewayIntentBits.GuildPresences,
-		GatewayIntentBits.GuildMessageReactions,
-		GatewayIntentBits.DirectMessages,
 		GatewayIntentBits.MessageContent,
-		GatewayIntentBits.GuildMembers,
+		GatewayIntentBits.DirectMessages,
+		GatewayIntentBits.GuildMessageReactions,
+		GatewayIntentBits.GuildEmojisAndStickers,
 	],
 	partials: [
 		Partials.Channel,

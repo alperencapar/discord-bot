@@ -35,7 +35,7 @@ module.exports = async (client, member, missingPermissions) => {
 
 	const embedData = {
 		color: 0x0099ff,
-		description: `✍${member.user.toString()} sunucudan çıkış yaptı`,
+		description: `💨${member.user.toString()} sunucudan çıkış yaptı`,
 		author: {
 			name: `${member.user.username}#${member.user.discriminator}`,
 			icon_url: userAvatar,

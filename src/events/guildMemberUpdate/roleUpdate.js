@@ -5,32 +5,30 @@ const {
 	Client,
 } = require("discord.js")
 const LogId = require("../../models/channelLogId")
-const guildOwnerUsernameProtection = require("../../handlers/guildOwnerUsernameProtection")
 const { findRecord } = require("../../handlers/dbHandler")
 const errorFileLogHandler = require("../../handlers/errorFileLogHandler")
 
-/**
- *
- * @param {Client} client
- * @param {GuildMember} member
- */
 module.exports = async (client, member, missingPermissions = []) => {
 	const [oldMember, newMember] = member
-
-	if (!missingPermissions?.includes("ManageNicknames"))
-		guildOwnerUsernameProtection(newMember)
+	const bot = newMember.guild.members.me
 
 	const userAvatar = newMember.user.displayAvatarURL({
 		format: "jpg",
 		size: 4096,
 	})
 
-	if (
-		oldMember.nickname?.toLowerCase() !== newMember.nickname?.toLowerCase()
-	) {
+	if (JSON.stringify(oldMember._roles) !== JSON.stringify(newMember._roles)) {
+		let oldRoles = oldMember._roles.map((role) => {
+			return `<@&${role}>`
+		})
+
+		let newRoles = newMember._roles.map((role) => {
+			return `<@&${role}>`
+		})
+
 		const embedData = {
 			color: 0x0099ff,
-			description: `✍${newMember.user.toString()} kullanıcı adını düzenledi`,
+			description: `✍🏻${newMember.user.toString()} rolü düzenlendi✍🏻`,
 			author: {
 				name: `${newMember.user.username}#${newMember.user.discriminator}`,
 				icon_url: userAvatar,
@@ -40,22 +38,19 @@ module.exports = async (client, member, missingPermissions = []) => {
 			},
 			fields: [
 				{
-					name: `Eski kullanıcı adı`,
-					value: `${oldMember.nickname || oldMember.user.username}`,
-					inline: true,
+					name: `Eski rol`,
+					value: `${oldRoles}`,
 				},
 
 				{
-					name: "Yeni kullanıcı adı",
-					value: `${newMember?.nickname || newMember.user.username}`,
-					inline: true,
+					name: "Yeni rol:",
+					value: `${newRoles}`,
 				},
 			],
 			footer: {
 				text: `USER ID: ${newMember.user.id}`,
 			},
 		}
-
 		const embed = new EmbedBuilder(embedData)
 		embed.setTimestamp()
 
@@ -73,14 +68,10 @@ module.exports = async (client, member, missingPermissions = []) => {
 					await logChannel.send({ embeds: [embed] })
 			}
 		} catch (error) {
-			console.log(`Detail: \n\n\n ${error}`)
 			const ErrFileLocation = __dirname + __filename
-			errorFileLogHandler(error, ErrFileLocation, "nicknameUpdate.js")
+			errorFileLogHandler(error, ErrFileLocation, "roleUpdate.js")
 		}
 	}
 }
 
-module.exports.botPermissions = [
-	PermissionFlagsBits.EmbedLinks,
-	PermissionFlagsBits.ManageNicknames,
-]
+module.exports.botPermissions = [PermissionFlagsBits.EmbedLinks]

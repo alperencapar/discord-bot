@@ -114,7 +114,7 @@ module.exports = {
 
 				const embedData = {
 					color: 0x0099ff,
-					description: `✍${targetUser.toString()} banlandı!`,
+					description: `🚫${targetUser.toString()} banlandı!🚫`,
 					author: {
 						name: `${targetUser.tag}`,
 						icon_url: userAvatar,

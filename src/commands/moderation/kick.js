@@ -109,7 +109,7 @@ module.exports = {
 
 				const embedData = {
 					color: 0x0099ff,
-					description: `✍${targetUser.toString()} sunucudan atıldı!`,
+					description: `🦵${targetUser.toString()} sunucudan atıldı!🦵`,
 					author: {
 						name: `${targetUser.tag}`,
 						icon_url: userAvatar,
@@ -129,7 +129,7 @@ module.exports = {
 						},
 					],
 					footer: {
-						text: `İşlem gören kullanıcı ID: ${targetUser.id}`,
+						text: `Banlanan kullanıcı ID: ${targetUser.id}`,
 					},
 				}
 
