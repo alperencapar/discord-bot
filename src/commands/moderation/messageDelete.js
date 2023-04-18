@@ -102,7 +102,7 @@ module.exports = {
 				}
 			} else {
 				const deletedMsgCount = await channel.bulkDelete(
-					messageCount + 1,
+					messageCount,
 					true
 				)
 				interaction.reply(
