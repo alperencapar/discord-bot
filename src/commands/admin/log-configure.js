@@ -53,8 +53,6 @@ module.exports = {
 			interaction.options.get("moderation").value
 		const rankChannelId = interaction.options.get("rank")?.value
 
-		console.log(joinLeaveChannelId)
-
 		try {
 			await interaction.deferReply()
 			await interaction.channel.sendTyping()

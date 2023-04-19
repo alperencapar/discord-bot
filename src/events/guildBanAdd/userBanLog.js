@@ -14,7 +14,6 @@ const errorFileLogHandler = require("../../handlers/errorFileLogHandler")
  * @param {GuildBan} guildBan
  */
 module.exports = async (client, guildBan, missingPermissions = []) => {
-	console.log("guildBanAdd")
 	const userAvatar = guildBan.user.displayAvatarURL({
 		format: "jpg",
 		size: 4096,

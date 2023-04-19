@@ -22,8 +22,6 @@ module.exports = async (client, message, missingPermissions = []) => {
 
 		if (msgUser.bot || (msgUser === null && msg === null)) return
 
-		console.log(msgUser)
-
 		const userAvatar = msgUser.displayAvatarURL({
 			format: "jpg",
 			size: 4096,

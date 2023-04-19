@@ -82,8 +82,6 @@ module.exports = {
 					channel
 						.bulkDelete(userMessages)
 						.then(async (msg) => {
-							console.log()
-							console.log("\n\n\n")
 							await interaction.reply(
 								`${user.toString()} kullanıcısının silinen mesaj sayısı: ${
 									msg.size
