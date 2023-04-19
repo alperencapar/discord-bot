@@ -1,9 +1,5 @@
 // const { EmbedBuilder } = require("@discordjs/builders")
-const {
-	EmbedBuilder,
-	ApplicationCommandOptionType,
-	AttachmentBuilder,
-} = require("discord.js")
+const { EmbedBuilder, ApplicationCommandOptionType } = require("discord.js")
 const errorFileLogHandler = require("../../handlers/errorFileLogHandler")
 
 module.exports = {

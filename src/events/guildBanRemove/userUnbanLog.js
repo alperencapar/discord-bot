@@ -1,18 +1,8 @@
-const {
-	PermissionFlagsBits,
-	EmbedBuilder,
-	Client,
-	GuildBan,
-} = require("discord.js")
+const { PermissionFlagsBits, EmbedBuilder } = require("discord.js")
 const LogId = require("../../models/channelLogId")
 const { findRecord } = require("../../handlers/dbHandler")
 const errorFileLogHandler = require("../../handlers/errorFileLogHandler")
 
-/**
- *
- * @param {Client} client
- * @param {GuildBan} guildBan
- */
 module.exports = async (client, guildBan, missingPermissions = []) => {
 	console.log("guildBanRemove")
 	const userAvatar = guildBan.user.displayAvatarURL({

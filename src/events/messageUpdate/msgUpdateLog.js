@@ -1,7 +1,5 @@
 const {
 	PermissionFlagsBits,
-	Client,
-	Message,
 	EmbedBuilder,
 	ButtonBuilder,
 	ButtonStyle,
@@ -10,12 +8,6 @@ const {
 const LogId = require("../../models/channelLogId")
 const { findRecord } = require("../../handlers/dbHandler")
 const errorFileLogHandler = require("../../handlers/errorFileLogHandler")
-
-/**
- *
- * @param {Client} client
- * @param {Message} message
- */
 
 module.exports = async (client, message, missingPermissions = []) => {
 	const [oldMsg, newMsg] = message

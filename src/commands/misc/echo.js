@@ -1,11 +1,4 @@
-const {
-	ApplicationCommandOptionType,
-	AttachmentBuilder,
-	Client,
-	CommandInteraction,
-	PermissionFlagsBits,
-	EmbedBuilder,
-} = require("discord.js")
+const { ApplicationCommandOptionType, EmbedBuilder } = require("discord.js")
 const errorFileLogHandler = require("../../handlers/errorFileLogHandler")
 
 module.exports = {
@@ -16,15 +9,10 @@ module.exports = {
 			name: "message",
 			description: "Message",
 			type: ApplicationCommandOptionType.String,
+			required: true,
 		},
 	],
 
-	/**
-	 *
-	 * @param {Client} client
-	 * @param {CommandInteraction} interaction
-	 * @returns
-	 */
 	callback: async (client, interaction) => {
 		if (!interaction.inGuild()) {
 			await interaction.reply("You can ran this command inside a server!")

@@ -1,19 +1,9 @@
-const {
-	PermissionFlagsBits,
-	EmbedBuilder,
-	GuildMember,
-	Client,
-} = require("discord.js")
+const { PermissionFlagsBits, EmbedBuilder } = require("discord.js")
 const LogId = require("../../models/channelLogId")
 const guildOwnerUsernameProtection = require("../../handlers/guildOwnerUsernameProtection")
 const { findRecord } = require("../../handlers/dbHandler")
 const errorFileLogHandler = require("../../handlers/errorFileLogHandler")
 
-/**
- *
- * @param {Client} client
- * @param {GuildMember} member
- */
 module.exports = async (client, member, missingPermissions = []) => {
 	const [oldMember, newMember] = member
 

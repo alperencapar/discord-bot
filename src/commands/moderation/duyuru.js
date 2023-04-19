@@ -1,8 +1,5 @@
 const {
 	ApplicationCommandOptionType,
-	AttachmentBuilder,
-	Client,
-	CommandInteraction,
 	PermissionFlagsBits,
 	EmbedBuilder,
 } = require("discord.js")

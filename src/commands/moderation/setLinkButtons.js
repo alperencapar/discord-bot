@@ -1,6 +1,4 @@
 const {
-	Client,
-	Interaction,
 	ApplicationCommandOptionType,
 	PermissionFlagsBits,
 	ActionRowBuilder,
@@ -56,12 +54,6 @@ module.exports = {
 	permissionsRequired: [PermissionFlagsBits.EmbedLinks],
 	botPermissions: [PermissionFlagsBits.EmbedLinks],
 
-	/**
-	 *
-	 * @param {Client} client
-	 * @param {Interaction} interaction
-	 * @returns
-	 */
 	callback: async (client, interaction) => {
 		try {
 			const allOptions = interaction.options._hoistedOptions

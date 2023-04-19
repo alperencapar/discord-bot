@@ -1,4 +1,4 @@
-const { EmbedBuilder, ApplicationCommandOptionType } = require("discord.js")
+const { ApplicationCommandOptionType } = require("discord.js")
 const randomNumberGenerate = require("../../utils/randomNumberGenerate")
 
 module.exports = {

@@ -1,6 +1,4 @@
 const {
-	Client,
-	Interaction,
 	ApplicationCommandOptionType,
 	PermissionFlagsBits,
 	EmbedBuilder,
@@ -28,12 +26,6 @@ module.exports = {
 	],
 	permissionsRequired: [PermissionFlagsBits.KickMembers],
 	botPermissions: [PermissionFlagsBits.KickMembers],
-
-	/**
-	 *
-	 * @param {Client} client
-	 * @param {Interaction} interaction
-	 */
 
 	callback: async (client, interaction) => {
 		const targetUserId = interaction.options.get("user").value

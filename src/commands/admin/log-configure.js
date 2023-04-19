@@ -1,8 +1,6 @@
 const {
 	ApplicationCommandOptionType,
 	PermissionFlagsBits,
-	Client,
-	Interaction,
 } = require("discord.js")
 
 const LogId = require("../../models/channelLogId")
@@ -35,11 +33,6 @@ module.exports = {
 	permissionsRequired: [PermissionFlagsBits.Administrator],
 	botPermissions: [PermissionFlagsBits.SendMessages],
 
-	/**
-	 *
-	 * @param {Client} client
-	 * @param {Interaction} interaction
-	 */
 	callback: async (client, interaction) => {
 		if (!interaction.inGuild()) {
 			await interaction.reply(

@@ -1,8 +1,6 @@
 const {
 	ApplicationCommandOptionType,
 	PermissionFlagsBits,
-	Client,
-	Interaction,
 } = require("discord.js")
 const errorFileLogHandler = require("../../handlers/errorFileLogHandler")
 
@@ -26,13 +24,6 @@ module.exports = {
 	],
 	permissionsRequired: [PermissionFlagsBits.ManageMessages],
 	botPermissions: [PermissionFlagsBits.ManageMessages],
-
-	/**
-	 *
-	 * @param {Client} client
-	 * @param {Interaction} interaction
-	 * @returns
-	 */
 
 	callback: async (client, interaction) => {
 		if (!interaction.inGuild()) return

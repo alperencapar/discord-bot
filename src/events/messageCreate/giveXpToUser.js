@@ -4,15 +4,8 @@ const LogId = require("../../models/channelLogId")
 const calcLevelXp = require("../../utils/calcLevelXp")
 const cooldowns = new Set()
 
-const { Client, Message } = require("discord.js")
 const { findRecord, createRecord } = require("../../handlers/dbHandler")
 const errorFileLogHandler = require("../../handlers/errorFileLogHandler")
-/**
- *
- * @param {Client} client
- * @param {Message} message
- * @returns
- */
 
 module.exports = async (client, message) => {
 	if (

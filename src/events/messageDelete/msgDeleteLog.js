@@ -1,18 +1,7 @@
-const {
-	PermissionFlagsBits,
-	Client,
-	Message,
-	EmbedBuilder,
-} = require("discord.js")
+const { PermissionFlagsBits, EmbedBuilder } = require("discord.js")
 const LogId = require("../../models/channelLogId")
 const { findRecord } = require("../../handlers/dbHandler")
 const errorFileLogHandler = require("../../handlers/errorFileLogHandler")
-
-/**
- *
- * @param {Client} client
- * @param {Message} message
- */
 
 module.exports = async (client, message, missingPermissions = []) => {
 	try {

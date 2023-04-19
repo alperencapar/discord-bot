@@ -1,5 +1,4 @@
 const {
-	EmbedBuilder,
 	ApplicationCommandOptionType,
 	PermissionFlagsBits,
 } = require("discord.js")

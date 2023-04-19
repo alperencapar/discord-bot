@@ -1,6 +1,4 @@
 const {
-	Client,
-	Interaction,
 	ApplicationCommandOptionType,
 	PermissionFlagsBits,
 } = require("discord.js")
@@ -20,12 +18,6 @@ module.exports = {
 	],
 	permissionsRequired: [PermissionFlagsBits.BanMembers],
 	botPermissions: [PermissionFlagsBits.BanMembers],
-
-	/**
-	 *
-	 * @param {Client} client
-	 * @param {Interaction} interaction
-	 */
 
 	callback: async (client, interaction) => {
 		try {
