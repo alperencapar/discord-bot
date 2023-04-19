@@ -20,7 +20,9 @@ module.exports = async (client, message, missingPermissions = []) => {
 		const msgUser = message.author
 		const messageChannel = await message.channel.fetch(message.channelId)
 
-		if (msgUser === null && msg === null) return
+		if (msgUser.bot || (msgUser === null && msg === null)) return
+
+		console.log(msgUser)
 
 		const userAvatar = msgUser.displayAvatarURL({
 			format: "jpg",
