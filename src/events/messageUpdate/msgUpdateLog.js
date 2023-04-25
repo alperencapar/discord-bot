@@ -12,7 +12,7 @@ const errorFileLogHandler = require("../../handlers/errorFileLogHandler")
 module.exports = async (client, message, missingPermissions = []) => {
 	const [oldMsg, newMsg] = message
 
-	if (newMsg.author.bot) return
+	if (newMsg.author.bot || oldMsg.content == newMsg.content) return
 
 	try {
 		const guild = await client.guilds.fetch(newMsg.guildId)
