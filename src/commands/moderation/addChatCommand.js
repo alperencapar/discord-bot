@@ -3,12 +3,14 @@ const {
 	CommandInteraction,
 	ApplicationCommandOptionType,
 	PermissionFlagsBits,
+	EmbedBuilder,
 } = require("discord.js")
 const errorFileLogHandler = require("../../handlers/errorFileLogHandler")
 const {
 	findRecord,
 	createRecord,
 	findOneAndRemoveRecord,
+	findAndSelect,
 } = require("../../handlers/dbHandler")
 const ChatCommand = require("../../models/ChatCommand")
 
@@ -56,6 +58,11 @@ module.exports = {
 				},
 			],
 		},
+		{
+			name: "list",
+			description: "list chat commands",
+			type: ApplicationCommandOptionType.Subcommand,
+		},
 	],
 	/**
 	 *
@@ -66,6 +73,8 @@ module.exports = {
 		// console.table(interaction)
 		// console.log(interaction.options.get("command-response"))
 		const subCommandName = interaction.options.getSubcommand()
+
+		await interaction.channel.sendTyping()
 
 		try {
 			let commandName
@@ -129,14 +138,35 @@ module.exports = {
 					)
 					break
 
+				case "list":
+					const allCommands = await findAndSelect(ChatCommand, {
+						guildId: interaction.guildId,
+					})
+
+					const embed = new EmbedBuilder({
+						color: 0x00ff00,
+						description: `Chat Komut Listesi`,
+					})
+
+					allCommands.map((command, index) => {
+						embed.addFields({
+							name: `${index + 1} ${command.commandName}`,
+							value: `**Yanıt:** ${
+								command.commandResponse
+							}\n**Alias:** ${
+								command.commandAlias
+									? command.commandAlias
+									: "-"
+							}`,
+						})
+					})
+
+					await interaction.reply({ embeds: [embed] })
+					break
+
 				default:
 					break
 			}
-
-			await interaction.channel.sendTyping()
-			// await interaction.deferReply()
-
-			await interaction.reply(`Komut eklendi!`)
 		} catch (error) {
 			const ErrFileLocation = __dirname + __filename
 			errorFileLogHandler(error, ErrFileLocation, interaction)

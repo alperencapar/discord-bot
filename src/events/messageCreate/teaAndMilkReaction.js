@@ -4,9 +4,10 @@ module.exports = async (client, message) => {
 	if (message.author.bot) return
 
 	if (
-		message.content.toLowerCase().includes("güna") ||
-		message.content.toLowerCase().includes("gunayd") ||
-		message.content.toLowerCase().includes("gnydn")
+		message.content.toLowerCase().includes("gün") ||
+		message.content.toLowerCase().includes("gny") ||
+		message.content.toLowerCase().includes("tün") ||
+		message.content.toLowerCase().includes("selam")
 	) {
 		const mornings = [
 			"günaydın",
@@ -18,6 +19,7 @@ module.exports = async (client, message) => {
 			"günydn",
 			"gunydn",
 			"gnydn",
+			"güno",
 			"tünaydın",
 			"tünaydı",
 			"tunaydin",
@@ -25,7 +27,6 @@ module.exports = async (client, message) => {
 			"selamlar",
 			"selams",
 			"selam",
-			"slm",
 		]
 
 		let clearedMessageContent = repeatingLetterHandler(
