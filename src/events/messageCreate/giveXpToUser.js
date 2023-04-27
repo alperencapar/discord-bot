@@ -41,15 +41,14 @@ module.exports = async (client, message) => {
 
 				let rankChannel
 
-				if (logSettings.rankChannelId) {
+				if (logSettings && logSettings.rankChannelId) {
 					rankChannel = await message.guild.channels.fetch(
 						logSettings.rankChannelId
 					)
-				} else {
-					rankChannel = message.channel
+					rankChannel.send(
+						`${message.member} level ${level.level} oldu!`
+					)
 				}
-
-				rankChannel.send(`${message.member} level ${level.level} oldu!`)
 			}
 
 			await level.save().catch((err) => {

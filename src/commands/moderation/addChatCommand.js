@@ -2,6 +2,7 @@ const {
 	Client,
 	CommandInteraction,
 	ApplicationCommandOptionType,
+	PermissionFlagsBits,
 } = require("discord.js")
 const errorFileLogHandler = require("../../handlers/errorFileLogHandler")
 const {
@@ -80,6 +81,7 @@ module.exports = {
 						interaction.options.get("command-alias")?.value
 
 					isCommandExist = await findRecord(ChatCommand, {
+						guildId: interaction.guildId,
 						commandName: commandName,
 					})
 
@@ -93,6 +95,7 @@ module.exports = {
 						await isCommandExist.save()
 					} else {
 						const newCommand = await createRecord(ChatCommand, {
+							guildId: interaction.guildId,
 							commandName: commandName,
 							commandResponse: commandResponse,
 							commandAlias: commandAlias,
@@ -103,11 +106,16 @@ module.exports = {
 						}
 					}
 
+					await interaction.reply(
+						`Komut eklendi! Komut: ${commandName}`
+					)
+
 					break
 				case "delete":
 					commandName = interaction.options.get("command-name").value
 
 					let delQuery = {
+						guildId: interaction.guildId,
 						commandName: commandName,
 					}
 
@@ -115,6 +123,10 @@ module.exports = {
 					if (isCommandExist) {
 						await findOneAndRemoveRecord(ChatCommand, delQuery)
 					}
+
+					await interaction.reply(
+						`Komut silindi! Komut: ${commandName}`
+					)
 					break
 
 				default:
@@ -124,10 +136,13 @@ module.exports = {
 			await interaction.channel.sendTyping()
 			// await interaction.deferReply()
 
-			await interaction.reply(`ok`)
+			await interaction.reply(`Komut eklendi!`)
 		} catch (error) {
 			const ErrFileLocation = __dirname + __filename
 			errorFileLogHandler(error, ErrFileLocation, interaction)
 		}
 	},
+
+	permissionsRequired: [PermissionFlagsBits.ModerateMembers],
+	botPermissions: [PermissionFlagsBits.SendMessages],
 }

@@ -76,7 +76,7 @@ module.exports = async (client, member, missingPermissions) => {
 			guildId: member.guild.id,
 		})
 
-		if (logSettings.joinLeaveChannelId) {
+		if (logSettings && logSettings.joinLeaveChannelId) {
 			let logChannel = await member.guild.channels.fetch(
 				logSettings.joinLeaveChannelId
 			)

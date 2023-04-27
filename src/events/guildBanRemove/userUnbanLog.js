@@ -41,7 +41,7 @@ module.exports = async (client, guildBan, missingPermissions = []) => {
 			guildId: guildBan.guild.id,
 		})
 
-		if (logSettings?.moderationLogChannelId) {
+		if (logSettings && logSettings?.moderationLogChannelId) {
 			let logChannel = await guildBan.guild.channels.fetch(
 				logSettings.moderationLogChannelId
 			)

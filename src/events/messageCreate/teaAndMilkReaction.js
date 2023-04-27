@@ -18,6 +18,14 @@ module.exports = async (client, message) => {
 			"günydn",
 			"gunydn",
 			"gnydn",
+			"tünaydın",
+			"tünaydı",
+			"tunaydin",
+			"selmalar",
+			"selamlar",
+			"selams",
+			"selam",
+			"slm",
 		]
 
 		let clearedMessageContent = repeatingLetterHandler(
@@ -27,8 +35,8 @@ module.exports = async (client, message) => {
 		for (const morning of mornings) {
 			if (clearedMessageContent.includes(morning)) {
 				const emoji =
-					message.guild.emojis.cache.find(
-						(emoji) => emoji.name === "sakinle"
+					message.guild.emojis.cache.find((emoji) =>
+						emoji.name.includes("sakinle")
 					) || "☕"
 				message.react(emoji)
 
