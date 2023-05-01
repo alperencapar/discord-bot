@@ -2,22 +2,26 @@ const NodeCache = require("node-cache")
 const db = require("./dbHandler")
 const errorFileLogHandler = require("./errorFileLogHandler")
 
-const cache = new NodeCache({ stdTTL: 600, checkperiod: 300 })
+const cache = new NodeCache({ stdTTL: 1500, checkperiod: 900 })
 
 var models = []
 
 // pull data from db
-const getDataFromDatabase = async (Model, query, dataName) => {
+const getDataFromDatabase = async (Model, query = {}, dataName) => {
 	try {
 		const data = {}
 
 		// Veri tabanından verileri çekin ve önbelleğe kaydedin
-		const records = await db.findAndSelect(Model, query)
+		let records
+		records = await db.findAndSelect(Model, query)
 
 		data[dataName] = records
 
-		// update cache
-		cache.set(dataName, data)
+		if (records) {
+			cache.set(dataName, data[dataName])
+		}
+
+		//for auto refesh
 
 		const hasSameDataName = models.some(
 			(model) => model.dataName === dataName
@@ -26,7 +30,6 @@ const getDataFromDatabase = async (Model, query, dataName) => {
 		if (!hasSameDataName) {
 			models.push({
 				model: Model,
-				query: query,
 				dataName: dataName,
 			})
 		}
@@ -36,26 +39,31 @@ const getDataFromDatabase = async (Model, query, dataName) => {
 	}
 }
 
+const refreshCache = async (Model, query = {}, dataName) => {
+	await getDataFromDatabase(Model, query, dataName)
+}
+
 // update db
 setInterval(async () => {
 	for (const model of models) {
-		await getDataFromDatabase(model.model, model.query, model.dataName)
+		await refreshCache(model.model, {}, model.dataName)
 	}
-}, 120000)
+}, 600000)
 
 // get cache info
-const getRecords = async (Model, query, dataName) => {
+const getRecords = async (Model, query = {}, dataName) => {
 	let data = cache.get(dataName)
 
 	// Önbellekte veriler yoksa veri tabanından çekin ve önbelleğe kaydedin
 	if (data == undefined) {
 		await getDataFromDatabase(Model, query, dataName)
 		data = cache.get(dataName)
+		if (!data) return null
 	}
-
 	return data
 }
 
 module.exports = {
 	getRecords,
+	refreshCache,
 }

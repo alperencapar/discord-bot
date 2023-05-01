@@ -6,6 +6,7 @@ const cooldowns = new Set()
 
 const { findRecord, createRecord } = require("../../handlers/dbHandler")
 const errorFileLogHandler = require("../../handlers/errorFileLogHandler")
+const { getRecords } = require("../../handlers/chatCommandCacheHandler")
 
 module.exports = async (client, message) => {
 	if (
@@ -14,6 +15,20 @@ module.exports = async (client, message) => {
 		cooldowns.has(message.author.id)
 	)
 		return
+
+	const guildId = message.guildId
+
+	let recs = await getRecords(LogId, {}, "logId")
+
+	if (!recs) return
+
+	let logSetting = recs.find((logSetting) => {
+		if (logSetting.guildId == guildId) {
+			return logSetting
+		}
+	})
+
+	if (!logSetting?.rankChannelId) return
 
 	const xpToGive = randomXpGenerate(25, 50)
 
@@ -43,7 +58,7 @@ module.exports = async (client, message) => {
 
 				if (logSettings && logSettings.rankChannelId) {
 					rankChannel = await message.guild.channels.fetch(
-						logSettings.rankChannelId
+						logSetting.rankChannelId
 					)
 					rankChannel.send(
 						`${message.member} level ${level.level} oldu!`

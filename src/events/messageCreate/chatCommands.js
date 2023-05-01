@@ -12,18 +12,14 @@ module.exports = async (client, message) => {
 	if (message.author.bot || !message.inGuild()) return
 	if (!message.content.startsWith("!")) return
 
-	const rec = await getRecords(
-		ChatCommand,
-		{
-			guildId: message.guildId,
-		},
-		"chatCommand"
-	)
+	const recs = await getRecords(ChatCommand, {}, "chatCommand")
 
-	// const commandVariables = ["${user}", "${toUser}"]
+	if (!recs) return
+
 	const commandVariables = [{ user: "${user}" }, { toUser: "${toUser}" }]
 
-	for (const chatCommand of rec.chatCommand) {
+	for (const chatCommand of recs) {
+		if (chatCommand.guildId !== message.guildId) continue
 		let sendResponse = false
 		let commandAliases
 
@@ -68,12 +64,10 @@ module.exports = async (client, message) => {
 								const toUser = msgContentArr.find((txt) =>
 									txt.match(/<@[0-9]+>/g)
 								)
-								console.log(toUser)
 								commandResponse = commandResponse.replace(
 									"${toUser}",
 									toUser
 								)
-								console.log(commandResponse)
 
 								break
 
@@ -84,12 +78,6 @@ module.exports = async (client, message) => {
 				}
 			}
 
-			// if (chatCommand.commandResponse.includes("${user}")) {
-			// 	commandResponse = chatCommand.commandResponse.replace(
-			// 		"${user}",
-			// 		message.author.toString()
-			// 	)
-			// }
 			message.reply(`${commandResponse}`)
 		}
 	}

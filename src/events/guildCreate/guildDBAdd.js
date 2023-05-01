@@ -18,7 +18,6 @@ module.exports = async (client, guild) => {
 			})
 		}
 	} catch (error) {
-		console.log("Error saving guild id(db)")
 		console.log(`ERROR DETAILS: \n\n${error}`)
 		const ErrFileLocation = __dirname + __filename
 		errorFileLogHandler(error, ErrFileLocation, guild)

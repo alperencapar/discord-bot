@@ -25,7 +25,6 @@ module.exports = async (client, message) => {
 			"tunaydin",
 			"selmalar",
 			"selamlar",
-			"selams",
 			"selam",
 		]
 

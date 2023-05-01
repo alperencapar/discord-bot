@@ -2,15 +2,28 @@ const { PermissionFlagsBits, EmbedBuilder } = require("discord.js")
 const LogId = require("../../models/channelLogId")
 const { findRecord } = require("../../handlers/dbHandler")
 const errorFileLogHandler = require("../../handlers/errorFileLogHandler")
+const { getRecords } = require("../../handlers/chatCommandCacheHandler")
 
 module.exports = async (client, message, missingPermissions = []) => {
 	try {
-		const msg = message.content
-		const msgUser = message.author
+		const msg = message?.content
+		const msgUser = message?.author
+
+		if (msgUser?.bot || !(msgUser && msg)) return
+
+		let logSettings = await getRecords(LogId, {}, message.guildId)
+
+		if (!logSettings) return
+
+		let logSetting = logSettings.find((logSetting) => {
+			if (logSetting.guildId == message.guildId) {
+				return logSetting
+			}
+		})
+
+		if (!logSetting || !logSetting?.moderationLogChannelId) return
+
 		const messageChannel = await message.channel.fetch(message.channelId)
-
-		if (msgUser.bot || (msgUser === null && msg === null)) return
-
 		const userAvatar = msgUser.displayAvatarURL({
 			format: "jpg",
 			size: 4096,
@@ -45,19 +58,13 @@ module.exports = async (client, message, missingPermissions = []) => {
 		const embed = new EmbedBuilder(embedData)
 		embed.setTimestamp()
 
-		let logSettings = await findRecord(LogId, {
-			guildId: message.guildId,
-		})
+		const guild = await client.guilds.fetch(message.guildId)
+		let logChannel = await guild.channels.fetch(
+			logSetting.moderationLogChannelId
+		)
 
-		if (logSettings && logSettings?.moderationLogChannelId) {
-			const guild = await client.guilds.fetch(message.guildId)
-			let logChannel = await guild.channels.fetch(
-				logSettings.moderationLogChannelId
-			)
-
-			if (!missingPermissions?.includes("EmbedLinks"))
-				await logChannel.send({ embeds: [embed] })
-		}
+		if (!missingPermissions?.includes("EmbedLinks"))
+			await logChannel.send({ embeds: [embed] })
 	} catch (error) {
 		const ErrFileLocation = __dirname + __filename
 		errorFileLogHandler(error, ErrFileLocation, message)

@@ -22,8 +22,6 @@ module.exports = {
 
 			const message = await channel.messages.fetch(messageId)
 
-			console.log(message)
-
 			const isSystem = await message.author.system
 
 			if (isSystem) {

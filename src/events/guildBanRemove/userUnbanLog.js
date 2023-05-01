@@ -4,51 +4,58 @@ const { findRecord } = require("../../handlers/dbHandler")
 const errorFileLogHandler = require("../../handlers/errorFileLogHandler")
 
 module.exports = async (client, guildBan, missingPermissions = []) => {
-	console.log("guildBanRemove")
-	const userAvatar = guildBan.user.displayAvatarURL({
-		format: "jpg",
-		size: 4096,
-	})
-
-	const embedData = {
-		color: 0x0099ff,
-		description: `${guildBan.user.toString()} banı kaldırıldı!`,
-		author: {
-			name: `${guildBan.user.username}#${guildBan.user.discriminator}`,
-			icon_url: userAvatar,
-		},
-		thumbnail: {
-			url: userAvatar,
-		},
-		fields: [
-			{
-				name: `Sebep:`,
-				value: `${
-					guildBan.reason ? guildBan.reason : "Sebep belirtilmedi."
-				}`,
-			},
-		],
-		footer: {
-			text: `USER ID: ${guildBan.user.id}`,
-		},
-	}
-
-	const embed = new EmbedBuilder(embedData)
-	embed.setTimestamp()
-
 	try {
-		let logSettings = await findRecord(LogId, {
-			guildId: guildBan.guild.id,
+		if (missingPermissions?.includes("EmbedLinks")) return
+
+		let logSettings = await getRecords(LogId, {}, "logId")
+		if (!logSettings) return
+
+		let logSetting = logSettings.find((logSetting) => {
+			if (logSetting.guildId == guildBan.guild.id) {
+				return logSetting
+			}
 		})
 
-		if (logSettings && logSettings?.moderationLogChannelId) {
-			let logChannel = await guildBan.guild.channels.fetch(
-				logSettings.moderationLogChannelId
-			)
+		if (!logSetting && !logSetting?.moderationLogChannelId) return
 
-			if (!missingPermissions?.includes("EmbedLinks"))
-				await logChannel.send({ embeds: [embed] })
+		const userAvatar = guildBan.user.displayAvatarURL({
+			format: "jpg",
+			size: 4096,
+		})
+
+		const embedData = {
+			color: 0x0099ff,
+			description: `${guildBan.user.toString()} banı kaldırıldı!`,
+			author: {
+				name: `${guildBan.user.username}#${guildBan.user.discriminator}`,
+				icon_url: userAvatar,
+			},
+			thumbnail: {
+				url: userAvatar,
+			},
+			fields: [
+				{
+					name: `Sebep:`,
+					value: `${
+						guildBan.reason
+							? guildBan.reason
+							: "Sebep belirtilmedi."
+					}`,
+				},
+			],
+			footer: {
+				text: `USER ID: ${guildBan.user.id}`,
+			},
 		}
+
+		const embed = new EmbedBuilder(embedData)
+		embed.setTimestamp()
+
+		let logChannel = await guildBan.guild.channels.fetch(
+			logSetting.moderationLogChannelId
+		)
+
+		await logChannel.send({ embeds: [embed] })
 	} catch (error) {
 		const ErrFileLocation = __dirname + __filename
 		errorFileLogHandler(error, ErrFileLocation, guildBan)

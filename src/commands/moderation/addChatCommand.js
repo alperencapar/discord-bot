@@ -13,6 +13,7 @@ const {
 	findAndSelect,
 } = require("../../handlers/dbHandler")
 const ChatCommand = require("../../models/ChatCommand")
+const { refreshCache } = require("../../handlers/chatCommandCacheHandler")
 
 module.exports = {
 	name: "chat-commands",
@@ -77,6 +78,7 @@ module.exports = {
 		await interaction.channel.sendTyping()
 
 		try {
+			const guildId = interaction.guildId
 			let commandName
 			let commandResponse
 			let commandAlias
@@ -167,6 +169,8 @@ module.exports = {
 				default:
 					break
 			}
+
+			await refreshCache(ChatCommand, {}, "chatCommand")
 		} catch (error) {
 			const ErrFileLocation = __dirname + __filename
 			errorFileLogHandler(error, ErrFileLocation, interaction)

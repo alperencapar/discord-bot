@@ -8,13 +8,26 @@ const {
 const LogId = require("../../models/channelLogId")
 const { findRecord } = require("../../handlers/dbHandler")
 const errorFileLogHandler = require("../../handlers/errorFileLogHandler")
+const { getRecords } = require("../../handlers/chatCommandCacheHandler")
 
 module.exports = async (client, message, missingPermissions = []) => {
 	const [oldMsg, newMsg] = message
 
 	if (newMsg.author.bot || oldMsg.content == newMsg.content) return
+	if (missingPermissions.includes("EmbedLinks")) return
 
 	try {
+		let logSettings = await getRecords(LogId, {}, "logId")
+		if (!logSettings) return
+
+		let logSetting = logSettings.find((logSetting) => {
+			if (logSetting.guildId == newMsg.guildId) {
+				return logSetting
+			}
+		})
+
+		if (!logSetting || !logSetting?.moderationLogChannelId) return
+
 		const guild = await client.guilds.fetch(newMsg.guildId)
 
 		const messageChannel = await guild.channels.fetch(newMsg.channelId)
@@ -63,23 +76,14 @@ module.exports = async (client, message, missingPermissions = []) => {
 			.setStyle(ButtonStyle.Link)
 			.setURL(msg.url)
 
-		let logSettings = await findRecord(LogId, {
-			guildId: newMsg.guildId,
+		let logChannel = await guild.channels.fetch(
+			logSetting.moderationLogChannelId
+		)
+
+		await logChannel.send({
+			embeds: [embed],
+			components: [new ActionRowBuilder().addComponents(button)],
 		})
-
-		if (logSettings && logSettings?.moderationLogChannelId) {
-			const guild = await client.guilds.fetch(newMsg.guildId)
-			let logChannel = await guild.channels.fetch(
-				logSettings.moderationLogChannelId
-			)
-
-			if (!missingPermissions?.includes("EmbedLinks")) {
-				await logChannel.send({
-					embeds: [embed],
-					components: [new ActionRowBuilder().addComponents(button)],
-				})
-			}
-		}
 	} catch (error) {
 		const ErrFileLocation = __dirname + __filename
 		errorFileLogHandler(error, ErrFileLocation, message)
