@@ -81,6 +81,7 @@ module.exports = {
 			}
 
 			await refreshCache(LogId, {}, "logId")
+			await interaction.editReply(`✅kayıt başarı ile yapıldı.✅`)
 		} catch (error) {
 			console.log(
 				`Error at saving log channel settings to db. Error: ${error}`
