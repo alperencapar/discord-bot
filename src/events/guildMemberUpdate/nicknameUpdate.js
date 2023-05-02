@@ -1,7 +1,6 @@
 const { PermissionFlagsBits, EmbedBuilder } = require("discord.js")
 const LogId = require("../../models/channelLogId")
 const guildOwnerUsernameProtection = require("../../handlers/guildOwnerUsernameProtection")
-const { findRecord } = require("../../handlers/dbHandler")
 const errorFileLogHandler = require("../../handlers/errorFileLogHandler")
 const { getRecords } = require("../../handlers/chatCommandCacheHandler")
 
@@ -18,7 +17,7 @@ module.exports = async (client, member, missingPermissions = []) => {
 		if (!logSettings) return
 
 		let logSetting = logSettings.find((logSetting) => {
-			if (logSetting.guildId == newMember.guildId) {
+			if (logSetting.guildId == newMember.guild.id) {
 				return logSetting
 			}
 		})
