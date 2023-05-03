@@ -8,7 +8,7 @@ const {
 const LogId = require("../../models/channelLogId")
 const { findRecord } = require("../../handlers/dbHandler")
 const errorFileLogHandler = require("../../handlers/errorFileLogHandler")
-const { getRecords } = require("../../handlers/chatCommandCacheHandler")
+const { getRecords } = require("../../handlers/dbCacheHandler")
 
 module.exports = async (client, message, missingPermissions = []) => {
 	const [oldMsg, newMsg] = message

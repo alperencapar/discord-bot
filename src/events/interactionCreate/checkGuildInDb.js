@@ -1,7 +1,7 @@
 const { Client, CommandInteraction } = require("discord.js")
 const { createRecord } = require("../../handlers/dbHandler")
 const GuildInfo = require("../../models/GuildInfo")
-const { getRecords } = require("../../handlers/chatCommandCacheHandler")
+const { getRecords } = require("../../handlers/dbCacheHandler")
 const errorFileLogHandler = require("../../handlers/errorFileLogHandler")
 
 /**

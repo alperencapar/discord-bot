@@ -6,7 +6,7 @@ const cooldowns = new Set()
 
 const { findRecord, createRecord } = require("../../handlers/dbHandler")
 const errorFileLogHandler = require("../../handlers/errorFileLogHandler")
-const { getRecords } = require("../../handlers/chatCommandCacheHandler")
+const { getRecords } = require("../../handlers/dbCacheHandler")
 
 module.exports = async (client, message) => {
 	if (

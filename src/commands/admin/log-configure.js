@@ -6,7 +6,7 @@ const {
 const LogId = require("../../models/channelLogId")
 const { findRecord, createRecord } = require("../../handlers/dbHandler")
 const errorFileLogHandler = require("../../handlers/errorFileLogHandler")
-const { refreshCache } = require("../../handlers/chatCommandCacheHandler")
+const { refreshCache } = require("../../handlers/dbCacheHandler")
 
 module.exports = {
 	name: "log-config",

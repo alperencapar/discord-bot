@@ -5,7 +5,7 @@ const { PermissionFlagsBits } = require("discord.js")
 const LogId = require("../../models/channelLogId")
 const guildUserCountHandler = require("../../handlers/guildUserCountHandler")
 const errorFileLogHandler = require("../../handlers/errorFileLogHandler")
-const { getRecords } = require("../../handlers/chatCommandCacheHandler")
+const { getRecords } = require("../../handlers/dbCacheHandler")
 
 module.exports = async (client, member, missingPermissions) => {
 	// await guildUserCountHandler(member)

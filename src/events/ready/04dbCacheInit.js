@@ -1,5 +1,5 @@
 const errorFileLogHandler = require("../../handlers/errorFileLogHandler")
-const { refreshCache } = require("../../handlers/chatCommandCacheHandler")
+const { refreshCache } = require("../../handlers/dbCacheHandler")
 const ChatCommand = require("../../models/ChatCommand")
 const LogId = require("../../models/channelLogId")
 const GuildInfo = require("../../models/GuildInfo")

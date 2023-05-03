@@ -4,7 +4,7 @@ const guildUserCountHandler = require("../../handlers/guildUserCountHandler")
 const { PermissionFlagsBits } = require("discord.js")
 const errorFileLogHandler = require("../../handlers/errorFileLogHandler")
 const guildOwnerUsernameProtection = require("../../handlers/guildOwnerUsernameProtection")
-const { getRecords } = require("../../handlers/chatCommandCacheHandler")
+const { getRecords } = require("../../handlers/dbCacheHandler")
 
 module.exports = async (client, member, missingPermissions = []) => {
 	// await guildUserCountHandler(member)

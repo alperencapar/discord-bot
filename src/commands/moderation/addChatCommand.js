@@ -13,7 +13,7 @@ const {
 	findAndSelect,
 } = require("../../handlers/dbHandler")
 const ChatCommand = require("../../models/ChatCommand")
-const { refreshCache } = require("../../handlers/chatCommandCacheHandler")
+const { refreshCache } = require("../../handlers/dbCacheHandler")
 
 module.exports = {
 	name: "chat-commands",

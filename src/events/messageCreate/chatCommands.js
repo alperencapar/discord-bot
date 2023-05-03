@@ -1,5 +1,5 @@
 const { Message } = require("discord.js")
-const { getRecords } = require("../../handlers/chatCommandCacheHandler")
+const { getRecords } = require("../../handlers/dbCacheHandler")
 const repeatingLetterHandler = require("../../handlers/repeatingLetterHandler")
 const ChatCommand = require("../../models/ChatCommand")
 
