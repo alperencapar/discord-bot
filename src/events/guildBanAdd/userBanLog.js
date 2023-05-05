@@ -17,7 +17,7 @@ module.exports = async (client, guildBan, missingPermissions = []) => {
 			}
 		})
 
-		if (!logSetting && !logSetting?.moderationLogChannelId) return
+		if (!logSetting?.moderationLogChannelId) return
 
 		const userAvatar = guildBan.user.displayAvatarURL({
 			format: "jpg",

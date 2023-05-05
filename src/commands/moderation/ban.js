@@ -96,7 +96,7 @@ module.exports = {
 				guildId: interaction.guild.id,
 			})
 
-			if (logSettings && logSettings?.moderationLogChannelId) {
+			if (logSettings?.moderationLogChannelId) {
 				let logChannel = await interaction.guild.channels.fetch(
 					logSettings.moderationLogChannelId
 				)

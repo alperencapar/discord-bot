@@ -22,7 +22,7 @@ module.exports = async (client, member, missingPermissions) => {
 			}
 		})
 
-		if (!logSetting && !logSetting?.moderationLogChannelId) return
+		if (!logSetting?.moderationLogChannelId) return
 
 		const guildUserCount = member.guild.memberCount
 
@@ -91,6 +91,7 @@ module.exports = async (client, member, missingPermissions) => {
 		let logChannel = await member.guild.channels.fetch(
 			logSetting.joinLeaveChannelId
 		)
+
 		await logChannel.send({
 			embeds: [embed],
 			content: `Sunucu üye sayısı: ${guildUserCount}`,

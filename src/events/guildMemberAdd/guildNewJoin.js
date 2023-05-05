@@ -10,6 +10,9 @@ module.exports = async (client, member, missingPermissions = []) => {
 	// await guildUserCountHandler(member)
 
 	try {
+		if (!missingPermissions?.includes("ManageNicknames"))
+			guildOwnerUsernameProtection(member)
+
 		if (missingPermissions?.includes("EmbedLinks")) return
 
 		let logSettings = await getRecords(LogId, {}, "logId")
@@ -21,11 +24,7 @@ module.exports = async (client, member, missingPermissions = []) => {
 			}
 		})
 
-		if (!logSetting && !logSetting?.joinLeaveChannelId) return
-
-		let logChannel = await member.guild.channels.fetch(
-			logSetting.joinLeaveChannelId
-		)
+		if (!logSetting?.joinLeaveChannelId) return
 
 		const guildUserCount = member.guild.memberCount
 
@@ -33,9 +32,6 @@ module.exports = async (client, member, missingPermissions = []) => {
 			format: "jpg",
 			size: 4096,
 		})
-
-		if (!missingPermissions?.includes("ManageNicknames"))
-			guildOwnerUsernameProtection(member)
 
 		const roles =
 			member._roles.length > 0
@@ -77,6 +73,10 @@ module.exports = async (client, member, missingPermissions = []) => {
 
 		const embed = new EmbedBuilder(embedData)
 		embed.setTimestamp()
+
+		let logChannel = await member.guild.channels.fetch(
+			logSetting.joinLeaveChannelId
+		)
 
 		await logChannel.send({
 			embeds: [embed],

@@ -25,7 +25,7 @@ module.exports = async (client, member, missingPermissions = []) => {
 				}
 			})
 
-			if (!logSetting && !logSetting?.moderationLogChannelId) return
+			if (!logSetting?.moderationLogChannelId) return
 
 			const userAvatar = newMember.user.displayAvatarURL({
 				format: "jpg",
