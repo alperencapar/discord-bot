@@ -73,6 +73,7 @@ module.exports = {
 			return
 		}
 
+		if (minutes > 40319) minutes = 40319
 		try {
 			await targetUser.timeout(minutes * 60 * 1000, reason)
 			await interaction.editReply(
