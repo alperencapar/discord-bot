@@ -44,12 +44,14 @@ module.exports = {
 		const targetUser = await interaction.guild.members.fetch(targetUserId)
 
 		if (!targetUser) {
-			await interaction.editReply("User cannot found in this server")
+			await interaction.editReply("Kullanıcı sunucuda bulunamadı")
 			return
 		}
 
 		if (targetUser.id === interaction.guild.ownerId) {
-			await interaction.editReply("Server owner cannot be timed out 🧠")
+			await interaction.editReply(
+				"Sunucu sahibine zamanaşımı veremezsiniz 🧠"
+			)
 			return
 		}
 
@@ -62,13 +64,13 @@ module.exports = {
 
 		if (targetUserRolePosition >= requestUserRolePosition) {
 			await interaction.editReply(
-				"You can't timeout that user, beacause user is same/higher role than you"
+				"Bu kullanıcıya zamanaşımı uygulamayazsınız, çünkü kullanıcı sizinle aynı ya da daha yüksek role sahip"
 			)
 			return
 		}
 		if (targetUserRolePosition >= botRolePosition) {
 			await interaction.editReply(
-				"I can't timeout that user, beacause user is same/higher role than me"
+				"Bu kullanıcıya zamanaşımı uygulayamam, çünkü kullanıcı benimle aynı ya da daha yüksek role sahip"
 			)
 			return
 		}
@@ -77,7 +79,7 @@ module.exports = {
 		try {
 			await targetUser.timeout(minutes * 60 * 1000, reason)
 			await interaction.editReply(
-				`${targetUser} has timeouted for ${minutes} minutes.\nReason: ${reason}`
+				`${targetUser}, ${minutes} dakikalık zamanaşımına uğratıldı.\nSebep: ${reason}`
 			)
 		} catch (error) {
 			const ErrFileLocation = __dirname + __filename

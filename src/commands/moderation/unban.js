@@ -35,7 +35,7 @@ module.exports = {
 
 			if (!isMemberHasPermission) {
 				await interaction.editReply(
-					"You can't unban the user. You don't have permission to execute this command!"
+					"Ban kaldırılamıyor. Ban kaldırma yetkisine sahip değilsiniz!"
 				)
 				return
 			}
@@ -43,12 +43,12 @@ module.exports = {
 			if (isUserBanned) {
 				await interaction.guild.bans.remove(isUserBanned.user.id)
 				await interaction.editReply(
-					`${isUserBanned.user.username}#${isUserBanned.user.discriminator}'s ban removed. ID: ${isUserBanned.user.id}`
+					`${isUserBanned.user.username}#${isUserBanned.user.discriminator} adlı kullanıcının banı kaldırıldı. Kullanıcı ID: ${isUserBanned.user.id}`
 				)
 				return
 			} else {
 				await interaction.editReply(
-					`User cannot be found inside ban list!`
+					`Bu kullanıcı sunucuda banlı değil!`
 				)
 			}
 		} catch (error) {

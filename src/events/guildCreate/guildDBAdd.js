@@ -1,24 +1,28 @@
 const { Client, Guild } = require("discord.js")
 const GuildInfo = require("../../models/GuildInfo")
-const { findRecord, createRecord } = require("../../handlers/dbHandler")
+const { createRecord } = require("../../handlers/dbHandler")
 const errorFileLogHandler = require("../../handlers/errorFileLogHandler")
+const { refreshCache } = require("../../handlers/dbCacheHandler")
 
 module.exports = async (client, guild) => {
-	const query = {
-		guildId: guild.id,
-	}
-
 	try {
-		// const guildId = await GuildInfo.findOne(query);
-		const guildId = await findRecord(GuildInfo, query)
+		let allGuilds = await getRecords(GuildInfo, {}, "guildInfo")
+		if (!allGuilds) return
 
-		if (!guildId) {
+		let guildRecord = allGuilds.find((guildInfo) => {
+			if (guildInfo.guildId == guild.id) {
+				return guildInfo
+			}
+		})
+
+		if (!guildRecord) {
 			await createRecord(GuildInfo, {
-				guildId: guild.id,
+				guildId: interaction.guildId,
 			})
+
+			await refreshCache(GuildInfo, {}, "guildInfo")
 		}
 	} catch (error) {
-		console.log(`ERROR DETAILS: \n\n${error}`)
 		const ErrFileLocation = __dirname + __filename
 		errorFileLogHandler(error, ErrFileLocation, guild)
 	}

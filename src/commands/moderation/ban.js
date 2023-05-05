@@ -5,9 +5,9 @@ const {
 	PermissionFlagsBits,
 	EmbedBuilder,
 } = require("discord.js")
-const { findRecord } = require("../../handlers/dbHandler")
 const LogId = require("../../models/channelLogId")
 const errorFileLogHandler = require("../../handlers/errorFileLogHandler")
+const { getRecords } = require("../../handlers/dbCacheHandler")
 
 module.exports = {
 	name: "ban",
@@ -41,14 +41,14 @@ module.exports = {
 
 		if (!targetUser) {
 			await interaction.editReply(
-				"User cannot found in this server. Id ban feature not added yet."
+				"Kullanıcı bu sunucuda bulunamadı. Id ban özelliği henüz eklenmedi."
 			)
 			return
 		}
 
 		if (targetUser.id === interaction.guild.ownerId) {
 			await interaction.editReply({
-				content: "Server owner can't be banned 🧠",
+				content: "Sunucu sahibi banlanamaz 🧠",
 				ephemeral: true,
 			})
 			return
@@ -56,7 +56,7 @@ module.exports = {
 
 		if (targetUser.id == interaction.user.id) {
 			await interaction.editReply({
-				content: "You can't ban yourself 🧠",
+				content: "kendinizi banlayamazsınız 🧠",
 				ephemeral: true,
 			})
 			return
@@ -72,7 +72,7 @@ module.exports = {
 		if (targetUserRolePosition >= requestUserRolePosition) {
 			await interaction.editReply({
 				content:
-					"You can't ban that user, beacause user is same/higher role than you 📈",
+					"Bu kullanıcıyı banlayamazsınız, çünkü kullanıcı sizinle aynı ya da daha yüksek role sahip 📈",
 				ephemeral: true,
 			})
 			return
@@ -80,7 +80,7 @@ module.exports = {
 		if (targetUserRolePosition >= botRolePosition) {
 			await interaction.editReply({
 				content:
-					"I can't ban that user, beacause user is same/higher role than me 📈",
+					"Bu kullanıcıyı banlayamıyorum, çünkü kullanıcı benimle aynı ya da daha yüksek role sahip 📈",
 				ephemeral: true,
 			})
 			return
@@ -92,51 +92,56 @@ module.exports = {
 				`${targetUser} sunucudan banlandı. Sebep: ${reason}`
 			)
 
-			let logSettings = await findRecord(LogId, {
-				guildId: interaction.guild.id,
+			let logSettings = await getRecords(LogId, {}, "logId")
+			if (!logSettings) return
+
+			let logSetting = logSettings.find((logSetting) => {
+				if (logSetting.guildId == interaction.guild.id) {
+					return logSetting
+				}
 			})
 
-			if (logSettings?.moderationLogChannelId) {
-				let logChannel = await interaction.guild.channels.fetch(
-					logSettings.moderationLogChannelId
-				)
+			if (!logSetting?.moderationLogChannelId) return
 
-				const userAvatar = targetUser.displayAvatarURL({
-					format: "jpg",
-					size: 4096,
-				})
+			let logChannel = await interaction.guild.channels.fetch(
+				logSetting.moderationLogChannelId
+			)
 
-				const embedData = {
-					color: 0x0099ff,
-					description: `🚫${targetUser.toString()} banlandı!🚫`,
-					author: {
-						name: `${targetUser.tag}`,
-						icon_url: userAvatar,
+			const userAvatar = targetUser.displayAvatarURL({
+				format: "jpg",
+				size: 4096,
+			})
+
+			const embedData = {
+				color: 0x0099ff,
+				description: `🚫${targetUser.toString()} banlandı!🚫`,
+				author: {
+					name: `${targetUser.tag}`,
+					icon_url: userAvatar,
+				},
+				thumbnail: {
+					url: userAvatar,
+				},
+				fields: [
+					{
+						name: `Sebep: `,
+						value: `${reason}`,
 					},
-					thumbnail: {
-						url: userAvatar,
+
+					{
+						name: "Banlayan yetkili: ",
+						value: `${interaction.member.user.toString()}`,
 					},
-					fields: [
-						{
-							name: `Sebep: `,
-							value: `${reason}`,
-						},
-
-						{
-							name: "Banlayan yetkili: ",
-							value: `${interaction.member.user.toString()}`,
-						},
-					],
-					footer: {
-						text: `İşlem gören kullanıcı ID: ${targetUser.id}`,
-					},
-				}
-
-				const embed = new EmbedBuilder(embedData)
-				embed.setTimestamp()
-
-				await logChannel.send({ embeds: [embed] })
+				],
+				footer: {
+					text: `İşlem gören kullanıcı ID: ${targetUser.id}`,
+				},
 			}
+
+			const embed = new EmbedBuilder(embedData)
+			embed.setTimestamp()
+
+			await logChannel.send({ embeds: [embed] })
 		} catch (error) {
 			const ErrFileLocation = __dirname + __filename
 			errorFileLogHandler(error, ErrFileLocation, interaction)

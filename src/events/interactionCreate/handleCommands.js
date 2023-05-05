@@ -19,7 +19,7 @@ module.exports = async (client, interaction) => {
 			if (!devs.includes(interaction.member.id)) {
 				await interaction.reply({
 					content:
-						"Only developers are allowed to run this command.(command is currently under development/testing stage)",
+						"Bu komutu sadece bot geliştiricisi çalıştırabilir.(Komut test/geliştirme aşamasında olabilir)",
 					ephemeral: true,
 				})
 				return
@@ -30,7 +30,7 @@ module.exports = async (client, interaction) => {
 			if (!(interaction.guild.id === testServer)) {
 				await interaction.reply({
 					content:
-						"This command cannot be ran here.(command is currently under development/testing stage)",
+						"Bu komutu bu sunucuda çalıştıramazsınız.(Komut test/geliştirme aşamasında)",
 					ephemeral: true,
 				})
 				return
@@ -41,7 +41,8 @@ module.exports = async (client, interaction) => {
 			for (const permission of commandObject.permissionsRequired) {
 				if (!interaction.member.permissions.has(permission)) {
 					await interaction.reply({
-						content: "You do not have enough permissions.",
+						content:
+							"Bu komutu kullanmak için yeterli yetkiniz bulunmuyor.",
 						ephemeral: true,
 					})
 					return
@@ -55,7 +56,8 @@ module.exports = async (client, interaction) => {
 
 				if (!bot.permissions.has(permission)) {
 					await interaction.reply({
-						content: "I don't have enough permissions.",
+						content:
+							"Bu komutu uygulamak için yeterli yetkiye sahip değilim!",
 						ephemeral: true,
 					})
 					return

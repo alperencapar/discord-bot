@@ -36,7 +36,7 @@ module.exports = {
 		const targetUser = await interaction.guild.members.fetch(targetUserId)
 
 		if (!targetUser) {
-			await interaction.editReply("User cannot found in this server")
+			await interaction.editReply("Kullanıcı sunucuda bulunamadı")
 			return
 		}
 
@@ -49,7 +49,7 @@ module.exports = {
 
 		if (targetUserRolePosition >= requestUserRolePosition) {
 			await interaction.editReply(
-				"You can't untimeout that user, beacause user is same/higher role than you"
+				"Kullanıcının zamanaşımı kaldırılamıyor, çünkü kullanıcı sizinle aynı ya da daha yüksek role sahip"
 			)
 			return
 		}
@@ -57,7 +57,7 @@ module.exports = {
 		try {
 			await targetUser.timeout(minutes, reason)
 			await interaction.editReply(
-				`Removed ${targetUser}'s timeout .\nReason: ${reason}`
+				`${targetUser}adlı kullanıcının zamanaşımı kaldırıldı.\nSebep: ${reason}`
 			)
 		} catch (error) {
 			const ErrFileLocation = __dirname + __filename
