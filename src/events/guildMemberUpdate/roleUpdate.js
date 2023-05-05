@@ -9,6 +9,9 @@ const errorFileLogHandler = require("../../handlers/errorFileLogHandler")
 const { getRecords } = require("../../handlers/dbCacheHandler")
 
 module.exports = async (client, member, missingPermissions = []) => {
+	return
+	// disabled for larger servers where auto role is enabled when new user joins
+
 	const [oldMember, newMember] = member
 
 	if (JSON.stringify(oldMember._roles) !== JSON.stringify(newMember._roles)) {
