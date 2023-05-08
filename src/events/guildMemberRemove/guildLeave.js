@@ -22,7 +22,7 @@ module.exports = async (client, member, missingPermissions) => {
 			}
 		})
 
-		if (!logSetting?.moderationLogChannelId) return
+		if (!logSetting?.joinLeaveChannelId) return
 
 		const guildUserCount = member.guild.memberCount
 
