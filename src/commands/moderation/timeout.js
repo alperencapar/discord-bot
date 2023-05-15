@@ -34,7 +34,7 @@ module.exports = {
 
 	callback: async (client, interaction) => {
 		const targetUserId = interaction.options.get("user").value
-		const minutes = interaction.options.get("minutes")?.value || 5
+		let minutes = interaction.options.get("minutes")?.value || 5
 		const reason =
 			interaction.options.get("reason")?.value || "No reason given."
 

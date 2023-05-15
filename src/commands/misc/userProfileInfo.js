@@ -31,7 +31,7 @@ module.exports = {
 				credential.member._roles.length > 0
 					? credential.member._roles
 							.map((role) => `<@&${role}>`)
-							.join("\n")
+							.join(" ")
 					: "None"
 
 			const guild_join_date = new Date(
