@@ -103,7 +103,7 @@ module.exports = {
 
 			if (targetUser == interaction.member) {
 				loveEmbed.description = `📢${interaction.member.user.toString()} kendinizi sevme oranınız hesaplandı!`
-				answer = `%${loveMeter}`
+				answer = `%${loveMeter} `
 
 				switch (true) {
 					case loveMeter >= 90:
