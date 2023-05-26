@@ -1,4 +1,9 @@
-const { ApplicationCommandOptionType } = require("discord.js")
+const {
+	ApplicationCommandOptionType,
+	Client,
+	BaseInteraction,
+	EmbedBuilder,
+} = require("discord.js")
 const randomNumberGenerate = require("../../utils/randomNumberGenerate")
 const errorFileLogHandler = require("../../handlers/errorFileLogHandler")
 
@@ -13,6 +18,12 @@ module.exports = {
 			required: true,
 		},
 	],
+
+	/**
+	 *
+	 * @param {Client} client
+	 * @param {BaseInteraction} interaction
+	 */
 
 	callback: async (client, interaction) => {
 		await interaction.deferReply()
@@ -38,7 +49,7 @@ module.exports = {
 			let loveMeter = total / randomNumbers.length
 			loveMeter = parseFloat(loveMeter.toFixed(2))
 
-			let answer = `${loveMeter}%`
+			let answer = `%${loveMeter}`
 
 			switch (true) {
 				case loveMeter >= 90:
@@ -48,19 +59,19 @@ module.exports = {
 					answer += "✨ Muhteşem bir uyum!"
 					break
 				case loveMeter >= 70:
-					answer += "🌸 İyi bir anlaşma!"
+					answer += "🌸 İyi bir uyum!"
 					break
 				case loveMeter >= 60:
 					answer += "🌺 Harika uyum!"
 					break
 				case loveMeter >= 50:
-					answer += "🌷 Anlaşabilir bir ikili!"
+					answer += "🌷 Anlaşabilir ikili!"
 					break
 				case loveMeter >= 40:
 					answer += "🌼 İyi bir uyum!"
 					break
 				case loveMeter >= 30:
-					answer += "🌻 Anlaşabilirlik var!"
+					answer += "🌻 Anlaşabiliyorsunuz!"
 					break
 				default:
 					answer += "🌹 Özel bir uyum!"
@@ -68,18 +79,23 @@ module.exports = {
 
 			const userAvatar = targetUser.user.displayAvatarURL({
 				format: "jpg",
-				size: 128,
+				size: 256,
+			})
+			const commandUserAvatar = interaction.member.user.displayAvatarURL({
+				format: "jpg",
+				size: 256,
 			})
 
 			const loveEmbed = {
 				color: 0xff75ac,
 				author: {
 					name: targetUserNickname,
-					icon_url: userAvatar,
+					icon_url: commandUserAvatar,
 				},
-				thumbnail: {
-					url: userAvatar,
-				},
+				description: `📢${interaction.member.user.toString()} ile ${targetUser.toString()} arasındaki sevgi yüzdeliği hesaplandı! Oranı aşağıda bulabilirsiniz💙`,
+				// thumbnail: {
+				// 	url: userAvatar,
+				// },
 				fields: [
 					{
 						name: "Sevgi Miktarı:",
@@ -87,9 +103,18 @@ module.exports = {
 					},
 				],
 			}
+			const embeds = [
+				new EmbedBuilder(loveEmbed),
+				new EmbedBuilder()
+					.setURL("https://leventbatu.com/")
+					.setImage(userAvatar),
+				new EmbedBuilder()
+					.setURL("https://leventbatu.com/")
+					.setImage(commandUserAvatar),
+			]
 
 			await interaction.editReply({
-				embeds: [loveEmbed],
+				embeds,
 				content: `${targetUser.toString()} ile sevgi miktarı hesaplandı! ❤️`,
 			})
 		} catch (error) {

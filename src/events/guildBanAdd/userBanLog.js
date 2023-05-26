@@ -36,11 +36,7 @@ module.exports = async (client, guildBan, missingPermissions = []) => {
 			fields: [
 				{
 					name: `Sebep:`,
-					value: `${
-						guildBan.reason
-							? guildBan.reason
-							: "Sebep belirtilmedi."
-					}`,
+					value: `${guildBan.reason || "Sebep belirtilmedi."}`,
 				},
 			],
 			footer: {

@@ -43,28 +43,28 @@ module.exports = {
 			switch (true) {
 				case beautyMeter >= 90:
 					answer +=
-						"💖 Göz kamaştırıcı bir güzelliğe sahipsiniz!💫 Akıllara zarar 🤙"
+						"💖 Göz kamaştırıcı bir güzelliğe sahipsin!💫 Akıllara zarar 🤙"
 					break
 				case beautyMeter >= 80:
-					answer += "✨ Çok güzel bir görünüme sahipsiniz! 😍"
+					answer += "✨ Çok güzel bir görünüme sahipsin! 😍"
 					break
 				case beautyMeter >= 70:
-					answer += "🌸 Harika görünüyorsunuz! 🌟"
+					answer += "🌸 Harika görünüyorsun! 🌟"
 					break
 				case beautyMeter >= 60:
-					answer += "🌺 Çok hoş bir görüntünüz var!"
+					answer += "🌺 Baya iyisin!"
 					break
 				case beautyMeter >= 50:
-					answer += "🌷 Oldukça güzelsiniz!"
+					answer += "🌷 Oldukça güzelsin!"
 					break
 				case beautyMeter >= 40:
-					answer += "🌼 Güzel bir görünümünüz var!"
+					answer += "🌼 Güzelsin!"
 					break
 				case beautyMeter >= 30:
-					answer += "🌻 Hoş bir görüntünüz var! 😉"
+					answer += "🌻 Hoş 😉"
 					break
 				default:
-					answer += "🌹 Kendine özgü bir güzelliğiniz var! 🌟"
+					answer += "🌹 Kendine özgü güzelliğin var! 🌟"
 			}
 
 			if (targetUserId) {
