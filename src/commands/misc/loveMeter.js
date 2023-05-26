@@ -103,34 +103,39 @@ module.exports = {
 
 			if (targetUser == interaction.member) {
 				loveEmbed.description = `📢${interaction.member.user.toString()} kendinizi sevme oranınız hesaplandı!`
+				answer = `%${loveMeter}`
 
 				switch (true) {
 					case loveMeter >= 90:
-						answer = "💖 Kendinize bayılıyorsunuz! 🚨 🥼"
+						answer += "💖 Kendinize bayılıyorsunuz! 🚨 🥼"
 						break
 					case loveMeter >= 80:
-						answer = "✨ Kendinizi seviyorsunuz! 🚨 🥼"
+						answer += "✨ Kendinizi seviyorsunuz! 🚨 🥼"
 						break
 					case loveMeter >= 70:
-						answer = "🌸 Kendinize bir tutam tutulmuşsunuz! 🚨"
+						answer += "🌸 Kendinize bir tutam tutulmuşsunuz! 🚨"
 						break
 					case loveMeter >= 60:
-						answer = "🌺 Kendiniz ile uyum içerisindesiniz!"
+						answer += "🌺 Kendiniz ile uyum içerisindesiniz!"
 						break
 					case loveMeter >= 50:
-						answer =
+						answer +=
 							"🌷 Azıcık ondan, azıcık bundan. Yarı yarıya aşk var!"
 						break
 					case loveMeter >= 40:
-						answer = "Tahammül seviyeniz iyi görünüyor!"
+						answer += "Tahammül seviyeniz iyi görünüyor!"
 						break
 					case loveMeter >= 30:
-						answer = "Kendinize biraz tahammül edebiliyorsunuz!"
+						answer += "Kendinize biraz tahammül edebiliyorsunuz!"
 						break
 					default:
-						answer = "🚨 Dadi dadi acil destek alın! 🚨"
+						answer += "🚨 Dadi dadi acil destek alın! 🚨"
 				}
-				loveEmbed.fields[0].value = answer
+				const newValues = {
+					name: "Sevgi Miktarı:",
+					value: answer,
+				}
+				loveEmbed.fields[0] = newValues
 			}
 			await interaction.editReply({
 				embeds: [new EmbedBuilder(loveEmbed)],
