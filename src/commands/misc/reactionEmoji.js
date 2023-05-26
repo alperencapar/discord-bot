@@ -69,7 +69,7 @@ module.exports = {
 		},
 	],
 
-	permissionsRequired: [PermissionFlagsBits.Administrator],
+	permissionsRequired: [PermissionFlagsBits.ModerateMembers],
 	botPermissions: [PermissionFlagsBits.SendMessages],
 
 	/**
