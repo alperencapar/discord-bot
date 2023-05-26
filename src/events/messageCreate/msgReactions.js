@@ -31,13 +31,16 @@ module.exports = async (client, message) => {
 	allGuildReactions.map((reactionRecord) => {
 		if (reactionRecord.guildId == message.guildId) {
 			if (clearedMessageContent.includes(reactionRecord.reactionText)) {
-				const emoji = message.guild.emojis.cache.find((emoji) => {
-					return (
-						emoji.name.includes(reactionRecord.reactionEmoji) ||
+				// const emoji = message.guild.emojis.cache.find((emoji) => {
+				// 	return (
+				// 		emoji.name.includes(reactionRecord.reactionEmoji) ||
+				// 		reactionRecord.reactionEmojiFallback
+				// 	)
+				// })
+				message.react(
+					reactionRecord.reactionEmoji ||
 						reactionRecord.reactionEmojiFallback
-					)
-				})
-				message.react(emoji)
+				)
 
 				return
 			}
