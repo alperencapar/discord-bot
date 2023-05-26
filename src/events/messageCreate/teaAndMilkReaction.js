@@ -1,50 +1,48 @@
+const { Message } = require("discord.js")
 const repeatingLetterHandler = require("../../handlers/repeatingLetterHandler")
+const Reaction = require("../../models/Reaction")
+const { getRecords } = require("../../handlers/dbCacheHandler")
+
+/**
+ *
+ * @param {*} client
+ * @param {Message} message
+ * @returns
+ */
 
 module.exports = async (client, message) => {
 	if (message.author.bot) return
 
-	if (
-		message.content.toLowerCase().includes("gün") ||
-		message.content.toLowerCase().includes("gny") ||
-		message.content.toLowerCase().includes("tün") ||
-		message.content.toLowerCase().includes("selam")
-	) {
-		const mornings = [
-			"günaydın",
-			"gunaydın",
-			"günaydı",
-			"gunaydı",
-			"günaymadı",
-			"gunaymadı",
-			"günydn",
-			"gunydn",
-			"gnydn",
-			"güno",
-			"tünaydın",
-			"tünaydı",
-			"tunaydin",
-			"selmalar",
-			"selamlar",
-			"selam",
-		]
+	let allGuildReactions = await getRecords(Reaction, {}, "reaction")
+	if (!allGuildReactions) return
 
-		let clearedMessageContent = repeatingLetterHandler(
-			message.content
-		).toLowerCase()
+	let guildReactionRecords = allGuildReactions.find((reactionRecord) => {
+		if (reactionRecord.guildId == message.guildId) {
+			return reactionRecord
+		}
+	})
 
-		for (const morning of mornings) {
-			if (clearedMessageContent.includes(morning)) {
+	if (!guildReactionRecords) return
+
+	let clearedMessageContent = repeatingLetterHandler(
+		message.content.toLowerCase()
+	).toLowerCase()
+
+	allGuildReactions.map((reactionRecord) => {
+		if (reactionRecord.guildId == message.guildId) {
+			if (clearedMessageContent.includes(reactionRecord.reactionText)) {
 				const emoji =
 					message.guild.emojis.cache.find((emoji) =>
-						emoji.name.includes("sakinle")
-					) || "☕"
+						emoji.name.includes(reactionRecord.reactionEmoji)
+					) || reactionRecord.reactionEmojiFallback
 				message.react(emoji)
 
 				return
 			}
 		}
-	}
+	})
 
+	/* 
 	if (
 		message.content.toLowerCase().includes("geceler") ||
 		message.content.toLowerCase().includes("gclr")
@@ -78,4 +76,5 @@ module.exports = async (client, message) => {
 			}
 		}
 	}
+	*/
 }

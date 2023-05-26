@@ -2,7 +2,7 @@ const { Client, Guild } = require("discord.js")
 const GuildInfo = require("../../models/GuildInfo")
 const { createRecord } = require("../../handlers/dbHandler")
 const errorFileLogHandler = require("../../handlers/errorFileLogHandler")
-const { refreshCache } = require("../../handlers/dbCacheHandler")
+const { getRecords, refreshCache } = require("../../handlers/dbCacheHandler")
 
 module.exports = async (client, guild) => {
 	try {

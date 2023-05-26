@@ -3,6 +3,7 @@ const { refreshCache } = require("../../handlers/dbCacheHandler")
 const ChatCommand = require("../../models/ChatCommand")
 const LogId = require("../../models/channelLogId")
 const GuildInfo = require("../../models/GuildInfo")
+const Reaction = require("../../models/Reaction")
 
 module.exports = async (client) => {
 	const cacheItemsList = [
@@ -20,6 +21,11 @@ module.exports = async (client) => {
 			model: GuildInfo,
 			query: {},
 			dataName: "guildInfo",
+		},
+		{
+			model: Reaction,
+			query: {},
+			dataName: "reaction",
 		},
 	]
 	try {
