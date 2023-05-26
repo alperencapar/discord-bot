@@ -92,10 +92,7 @@ module.exports = {
 					name: targetUserNickname,
 					icon_url: commandUserAvatar,
 				},
-				description: `📢${interaction.member.user.toString()} ile ${targetUser.toString()} arasındaki sevgi yüzdeliği hesaplandı! Oranı aşağıda bulabilirsiniz💙`,
-				// thumbnail: {
-				// 	url: userAvatar,
-				// },
+				description: `📢${interaction.member.user.toString()} ile ${targetUser.toString()} arasındaki sevgi yüzdeliği hesaplandı!`,
 				fields: [
 					{
 						name: "Sevgi Miktarı:",
@@ -103,18 +100,40 @@ module.exports = {
 					},
 				],
 			}
-			const embeds = [
-				new EmbedBuilder(loveEmbed),
-				new EmbedBuilder()
-					.setURL("https://leventbatu.com/")
-					.setImage(userAvatar),
-				new EmbedBuilder()
-					.setURL("https://leventbatu.com/")
-					.setImage(commandUserAvatar),
-			]
 
+			if (targetUser == interaction.member) {
+				loveEmbed.description = `📢${interaction.member.user.toString()} kendinizi sevme oranınız hesaplandı!`
+
+				switch (true) {
+					case loveMeter >= 90:
+						answer = "💖 Kendinize bayılıyorsunuz! 🚨 🥼"
+						break
+					case loveMeter >= 80:
+						answer = "✨ Kendinizi seviyorsunuz! 🚨 🥼"
+						break
+					case loveMeter >= 70:
+						answer = "🌸 Kendinize bir tutam tutulmuşsunuz! 🚨"
+						break
+					case loveMeter >= 60:
+						answer = "🌺 Kendiniz ile uyum içerisindesiniz!"
+						break
+					case loveMeter >= 50:
+						answer =
+							"🌷 Azıcık ondan, azıcık bundan. Yarı yarıya aşk var!"
+						break
+					case loveMeter >= 40:
+						answer = "Tahammül seviyeniz iyi görünüyor!"
+						break
+					case loveMeter >= 30:
+						answer = "Kendinize biraz tahammül edebiliyorsunuz!"
+						break
+					default:
+						answer = "🚨 Dadi dadi acil destek alın! 🚨"
+				}
+				loveEmbed.fields[0].value = answer
+			}
 			await interaction.editReply({
-				embeds,
+				embeds: [new EmbedBuilder(loveEmbed)],
 				content: `${targetUser.toString()} ile sevgi miktarı hesaplandı! ❤️`,
 			})
 		} catch (error) {
