@@ -103,8 +103,6 @@ module.exports = {
 						"reaction-emoji-fallback"
 					).value
 
-					console.log(reactionEmoji)
-
 					isRecordExist = await findRecord(Reaction, {
 						guildId: interaction.guildId,
 						reactionText: reactionText,

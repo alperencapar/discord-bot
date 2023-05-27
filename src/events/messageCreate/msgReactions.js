@@ -30,56 +30,27 @@ module.exports = async (client, message) => {
 
 	allGuildReactions.map((reactionRecord) => {
 		if (reactionRecord.guildId == message.guildId) {
-			if (clearedMessageContent.includes(reactionRecord.reactionText)) {
-				// const emoji = message.guild.emojis.cache.find((emoji) => {
-				// 	return (
-				// 		emoji.name.includes(reactionRecord.reactionEmoji) ||
-				// 		reactionRecord.reactionEmojiFallback
-				// 	)
-				// })
-				message.react(
-					reactionRecord.reactionEmoji ||
-						reactionRecord.reactionEmojiFallback
+			if (
+				clearedMessageContent.includes(
+					reactionRecord.reactionText.toLowerCase()
 				)
+			) {
+				const regex = /<:(.*?):(\d+)>/
+				const emojiMatch = reactionRecord.reactionEmoji?.match(regex)
+
+				let emoji
+				if (emojiMatch) {
+					const emojiId = emojiMatch[2]
+					emoji = message.guild.emojis.cache.find(
+						(emoji) => emoji.id == emojiId
+					)
+				} else {
+					emoji = reactionRecord.reactionEmojiFallback
+				}
+				message.react(emoji)
 
 				return
 			}
 		}
 	})
-
-	/* 
-	if (
-		message.content.toLowerCase().includes("geceler") ||
-		message.content.toLowerCase().includes("gclr")
-	) {
-		const nights = [
-			"iyi geceler",
-			"iyigeceler",
-			"yi geceler",
-			"yigeceler",
-			"ıyı geceler",
-			"ıyıgeceler",
-			"iyi mi geceler",
-			"iyi gecelr",
-			"iyi gecler",
-			"iyi geclr",
-			"iyi gclr",
-			"iyigclr",
-			"yi gclr",
-			"yigclr",
-		]
-
-		let clearedMessageContent = repeatingLetterHandler(
-			message.content
-		).toLowerCase()
-
-		for (const night of nights) {
-			if (clearedMessageContent.includes(night)) {
-				message.react("🥛")
-
-				return
-			}
-		}
-	}
-	*/
 }
