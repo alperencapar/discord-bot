@@ -25,14 +25,14 @@ module.exports = async (client, message) => {
 	if (!guildReactionRecords) return
 
 	let clearedMessageContent = repeatingLetterHandler(
-		message.content.toLowerCase()
-	).toLowerCase()
+		message.content.toLocaleLowerCase("tr-TR")
+	).toLocaleLowerCase("tr-TR")
 
 	allGuildReactions.map((reactionRecord) => {
 		if (reactionRecord.guildId == message.guildId) {
 			if (
 				clearedMessageContent.includes(
-					reactionRecord.reactionText.toLowerCase()
+					reactionRecord.reactionText.toLocaleLowerCase("tr-TR")
 				)
 			) {
 				const regex = /<:(.*?):(\d+)>/
