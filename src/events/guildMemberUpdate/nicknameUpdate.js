@@ -30,8 +30,8 @@ module.exports = async (client, member, missingPermissions = []) => {
 		})
 
 		if (
-			oldMember.nickname?.toLowerCase() !==
-			newMember.nickname?.toLowerCase()
+			oldMember.nickname?.toLocaleLowerCase("tr-TR") !==
+			newMember.nickname?.toLocaleLowerCase("tr-TR")
 		) {
 			const embedData = {
 				color: 0x0099ff,

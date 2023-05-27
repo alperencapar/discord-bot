@@ -18,8 +18,8 @@ module.exports = async (member) => {
 	if (member.user.id != guildOwner.id) {
 		try {
 			if (
-				member.user.username.toLowerCase() ===
-				guildOwner.username.toLowerCase()
+				member.user.username.toLocaleLowerCase("tr-TR") ===
+				guildOwner.username.toLocaleLowerCase("tr-TR")
 			) {
 				isBotHasPermission
 					? await member.setNickname(`FAKE ${member.user.username}!`)
@@ -27,8 +27,8 @@ module.exports = async (member) => {
 			}
 
 			if (
-				member.nickname?.toLowerCase() ===
-				guildOwnerNickname.toLowerCase()
+				member.nickname?.toLocaleLowerCase("tr-TR") ===
+				guildOwnerNickname.toLocaleLowerCase("tr-TR")
 			) {
 				isBotHasPermission
 					? await member.setNickname(`FAKE ${member.nickname}!`)
@@ -36,8 +36,8 @@ module.exports = async (member) => {
 			}
 
 			if (
-				member.nickname?.toLowerCase() ===
-				guildOwner.username.toLowerCase()
+				member.nickname?.toLocaleLowerCase("tr-TR") ===
+				guildOwner.username.toLocaleLowerCase("tr-TR")
 			) {
 				isBotHasPermission
 					? await member.setNickname(`FAKE ${member.nickname}!`)
