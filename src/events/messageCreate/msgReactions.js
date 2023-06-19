@@ -45,7 +45,7 @@ module.exports = async (client, message) => {
 						(emoji) => emoji.id == emojiId
 					)
 
-					if (!emoji?.available) {
+					if (!emoji || !emoji?.available) {
 						emoji = reactionRecord.reactionEmojiFallback
 					}
 				} else {
