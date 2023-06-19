@@ -44,6 +44,10 @@ module.exports = async (client, message) => {
 					emoji = message.guild.emojis.cache.find(
 						(emoji) => emoji.id == emojiId
 					)
+
+					if (!emoji?.available) {
+						emoji = reactionRecord.reactionEmojiFallback
+					}
 				} else {
 					emoji = reactionRecord.reactionEmojiFallback
 				}
